@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Deception - ¿En quién confías?</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --panel-bg: #131b2e;
+            --accent-green: #00ff66;
+            --accent-red: #ff3366;
+            --accent-gold: #ffd700;
+            --text-main: #f0f6fc;
+            --text-muted: #8b949e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--panel-bg);
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 30px;
+            position: relative;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #30363d;
+            padding-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            color: var(--accent-green);
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .stats span {
+            color: var(--accent-gold);
+            font-weight: bold;
+        }
+
+        /* Pantallas */
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Botones y Controles */
+        .btn {
+            background: linear-gradient(135deg, #238636, #2ea043);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(46, 160, 67, 0.5);
+        }
+
+        .btn-shop {
+            background: linear-gradient(135deg, #8957e5, #a371f7);
+            box-shadow: 0 4px 12px rgba(137, 87, 229, 0.3);
+        }
+
+        .btn-shop:hover {
+            box-shadow: 0 6px 16px rgba(137, 87, 229, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #da3633, #f85149);
+            box-shadow: 0 4px 12px rgba(218, 54, 51, 0.3);
+        }
+
+        .menu-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Área de Juego / Partida */
+        .game-log {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: #c9d1d9;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .player-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .player-card:hover {
+            border-color: var(--accent-green);
+        }
+
+        .player-card.eliminated {
+            opacity: 0.4;
+            text-decoration: line-through;
+            pointer-events: none;
+        }
+
+        /* Tienda VIP */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .shop-item {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .shop-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .shop-item p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link:hover {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cabecera global -->
+        <header>
+            <h1>CYBER DECEPTION</h1>
+            <div class="stats">
+                <div>Créditos: <span id="user-credits">100</span> CR</div>
+                <div>Rango: <span id="user-rank">Agente</span></div>
+            </div>
+        </header>
+
+        <!-- PANTALLA 1: MENÚ PRINCIPAL -->
+        <div id="screen-menu" class="screen active">
+            <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main);">Uno de los 6 agentes es un traidor.</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted); line-height: 1.5;">Analiza el tráfico de la red, desenmascara al infiltrado antes de que sabotee el sistema y acumula créditos para subir de rango.</p>
+            <div class="menu-grid">
+                <button class="btn" onclick="startGame()">Buscar Sala Pública (Gratis)</button>
+                <button class="btn btn-shop" onclick="switchScreen('screen-shop')">Tienda VIP & Pases Exclusivos</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 2: PARTIDA EN CURSO -->
+        <div id="screen-game" class="screen">
+            <h2 id="game-status-title" style="margin-bottom: 15px; font-size: 1.2rem;">Fase de Análisis: Busca al Infiltrado</h2>
+            <div class="game-log" id="game-log">
+                [Sistema] Inicializando conexión segura con Cyber Deception...<br>
+                [Sistema] 6 agentes detectados en la sala.<br>
+            </div>
+
+            <p style="margin-bottom: 10px; font-size: 0.9rem; color: var(--text-muted);">Selecciona a un agente sospechoso para votar su expulsión:</p>
+            <div class="players-grid" id="players-container">
+                <!-- Generado por JS -->
+            </div>
+            
+            <button class="btn btn-danger" id="btn-action" onclick="executeVote()" style="display:none;">Confirmar Voto</button>
+        </div>
+
+        <!-- PANTALLA 3: TIENDA VIP Y MONETIZACIÓN -->
+        <div id="screen-shop" class="screen">
+            <h2 style="margin-bottom: 10px;">Tienda de Personalización y Pases</h2>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">Apoya el desarrollo de Cyber Deception y destaca en las salas públicas con cosméticos únicos.</p>
+            
+            <div class="shop-grid">
+                <div class="shop-item">
+                    <div>
+                        <h3>Pase de Batalla VIP</h3>
+                        <p>Desbloquea avatares animados exclusivos, acceso a torneos mensuales de 100€ y nombre dorado.</p
