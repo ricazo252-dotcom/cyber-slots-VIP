@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBER VEGAS - CASH REWARDS</title>
+    <title>CYBER VEGAS - VIP REWARDS</title>
     <style>
         :root {
             --bg-dark: #070913;
@@ -34,7 +34,6 @@
             overflow-x: hidden;
         }
 
-        /* BARRA SUPERIOR DOBLE (FICHAS + EFECTIVO) */
         .top-hud {
             width: 100%;
             max-width: 500px;
@@ -48,23 +47,33 @@
             top: 0;
             z-index: 50;
             box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            gap: 8px;
+            gap: 6px;
         }
 
         .currency-box {
             background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--gold);
-            padding: 5px 10px;
+            padding: 5px 8px;
             border-radius: 15px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             font-weight: 900;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            cursor: pointer;
         }
 
         .coin-val { color: var(--gold); }
         .cash-val { color: var(--cash); border-color: var(--cash); }
+
+        .vip-badge {
+            background: linear-gradient(135deg, var(--gold), #ca8a04);
+            color: #000;
+            font-weight: 900;
+            font-size: 0.72rem;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
 
         .main-wrapper {
             width: 100%;
@@ -89,7 +98,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* LOBBY */
         .lobby-banner {
             background: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
             border: 2px solid var(--cash);
@@ -101,13 +109,13 @@
         }
 
         .lobby-banner h1 {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 900;
             color: #fff;
         }
 
         .lobby-banner p {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: #a7f3d0;
             margin-top: 4px;
         }
@@ -147,7 +155,6 @@
         }
 
         .machine-card.neon { border-color: var(--cyan); }
-        .machine-card.zeus { border-color: var(--gold); }
         .machine-card.cash { border-color: var(--cash); }
 
         .machine-info {
@@ -167,15 +174,8 @@
             border-radius: 12px;
         }
 
-        .machine-title {
-            font-size: 1.05rem;
-            font-weight: 900;
-        }
-
-        .machine-sub {
-            font-size: 0.75rem;
-            color: #94a3b8;
-        }
+        .machine-title { font-size: 1.05rem; font-weight: 900; }
+        .machine-sub { font-size: 0.75rem; color: #94a3b8; }
 
         .play-pill {
             background: var(--gold);
@@ -186,7 +186,6 @@
             font-size: 0.8rem;
         }
 
-        /* PANTALLA DE JUEGO */
         .slot-header {
             display: flex;
             justify-content: space-between;
@@ -214,19 +213,8 @@
             margin-bottom: 14px;
         }
 
-        .jackpot-label {
-            font-size: 0.68rem;
-            font-weight: 800;
-            color: #a7f3d0;
-            letter-spacing: 1px;
-        }
-
-        .jackpot-amount {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 10px var(--cash);
-        }
+        .jackpot-label { font-size: 0.68rem; font-weight: 800; color: #a7f3d0; letter-spacing: 1px; }
+        .jackpot-amount { font-size: 1.5rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--cash); }
 
         .slot-machine-frame {
             background: #090d1c;
@@ -267,11 +255,7 @@
             margin-top: 8px;
         }
 
-        .controls-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .controls-panel { display: flex; flex-direction: column; gap: 10px; }
 
         .bet-selector {
             display: flex;
@@ -306,7 +290,6 @@
             border-radius: 14px;
             font-size: 1.25rem;
             font-weight: 900;
-            letter-spacing: 1px;
             cursor: pointer;
             text-transform: uppercase;
             box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
@@ -314,17 +297,32 @@
 
         .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* PANTALLA DE CANJE EN EFECTIVO */
+        /* PANTALLA DE CANJE CON REQUISITOS */
         .cashout-box {
             background: var(--card-bg);
             border: 1px solid var(--cash);
             border-radius: 14px;
             padding: 16px;
-            margin-top: 12px;
+            margin-top: 10px;
         }
 
         .cashout-box h3 { color: var(--cash); font-size: 1rem; margin-bottom: 6px; }
-        .cashout-box p { font-size: 0.78rem; color: #94a3b8; margin-bottom: 12px; line-height: 1.4; }
+        .cashout-box p { font-size: 0.78rem; color: #94a3b8; margin-bottom: 10px; line-height: 1.4; }
+
+        .requirement-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            font-size: 0.78rem;
+        }
+
+        .req-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
 
         .input-text {
             width: 100%;
@@ -359,6 +357,7 @@
         <div class="currency-box cash-val" onclick="openScreen('screen-cashout')">
             <span>💵</span> <span id="cash-display">0.00 €</span>
         </div>
+        <div class="vip-badge" id="vip-badge-text">VIP 1</div>
     </div>
 
     <div class="main-wrapper">
@@ -366,11 +365,11 @@
         <!-- LOBBY -->
         <div id="screen-lobby" class="screen active">
             <div class="lobby-banner">
-                <h1>SISTEMA DE PREMIOS</h1>
-                <p>Juega para acumular puntos y canjearlos en el bote acumulado en efectivo.</p>
+                <h1>SISTEMA DE PREMIOS VIP</h1>
+                <p>Sube de nivel VIP haciendo tiradas para desbloquear mejores condiciones de canje.</p>
                 <div class="action-row-lobby">
-                    <button class="btn-mini" onclick="claimDailyBonus()">🎁 Bono Fichas (+1k)</button>
-                    <button class="btn-mini" onclick="openScreen('screen-cashout')" style="background: var(--gold); color:#000;">💸 Canjear Saldo</button>
+                    <button class="btn-mini" onclick="claimDailyBonus()">🎁 Bono Fichas</button>
+                    <button class="btn-mini" onclick="openScreen('screen-cashout')" style="background: var(--gold); color:#000;">💸 Canjear</button>
                 </div>
             </div>
 
@@ -380,7 +379,7 @@
                         <div class="machine-icon">💎</div>
                         <div>
                             <div class="machine-title" style="color: var(--cyan);">NEON 777</div>
-                            <div class="machine-sub">Genera puntos estándar</div>
+                            <div class="machine-sub">Suma puntos de experiencia VIP</div>
                         </div>
                     </div>
                     <div class="play-pill">JUGAR</div>
@@ -391,7 +390,7 @@
                         <div class="machine-icon">💵</div>
                         <div>
                             <div class="machine-title" style="color: var(--cash);">CASH SLOTS PRO</div>
-                            <div class="machine-sub">Convierte tiradas en saldo real</div>
+                            <div class="machine-sub">Conversión acelerada a saldo real</div>
                         </div>
                     </div>
                     <div class="play-pill" style="background:var(--cash); color:#fff;">PRO</div>
@@ -433,17 +432,31 @@
             </div>
         </div>
 
-        <!-- PANTALLA DE CANJE EN EFECTIVO -->
+        <!-- PANTALLA DE CANJE CON REQUISITOS Y VIP -->
         <div id="screen-cashout" class="screen">
             <div class="slot-header">
                 <button class="back-btn" onclick="openScreen('screen-lobby')">← VOLVER</button>
-                <strong style="color: var(--cash);">CANJEAR PREMIO EN EFECTIVO</strong>
+                <strong style="color: var(--cash);">CANJE DE PREMIOS VIP</strong>
             </div>
 
             <div class="cashout-box">
-                <h3>Tus Puntos de Efectivo Acumulados</h3>
-                <p>Cada apuesta realizada en las salas suma puntos que puedes convertir en saldo retirable (mínimo 10.00 €).</p>
-                <div style="font-size: 1.8rem; font-weight: 900; color: var(--cash); margin-bottom: 14px;" id="cashout-balance-view">0.00 €</div>
+                <h3>Saldo Acumulado: <span id="cashout-balance-view">0.00 €</span></h3>
+                <p>Verifica que cumples con los requisitos de tu rango VIP actual antes de solicitar el pago.</p>
+
+                <div class="requirement-box">
+                    <div class="req-item">
+                        <span>Tu Rango Actual:</span>
+                        <strong id="req-vip-label" style="color: var(--gold);">VIP 1</strong>
+                    </div>
+                    <div class="req-item">
+                        <span>Límite Mínimo de Retiro:</span>
+                        <strong id="req-min-limit" style="color: var(--cash);">15.00 €</strong>
+                    </div>
+                    <div class="req-item">
+                        <span>Tiradas Realizadas:</span>
+                        <strong id="req-spins-count">0 / 50 mín.</strong>
+                    </div>
+                </div>
 
                 <input type="text" class="input-text" id="paypal-email" placeholder="Correo electrónico de tu PayPal / Bizum">
                 <button class="btn-full" onclick="requestCashout()">SOLICITAR RETIRO</button>
@@ -453,10 +466,12 @@
     </div>
 
     <script>
-        // VARIABLES DEL SISTEMA
-        let balance = 5000;       // Fichas virtuales para jugar
-        let cashBalance = 0.50;   // Saldo real en euros acumulado (puntos canjeables)
+        // VARIABLES DEL JUGADOR
+        let balance = 5000;       
+        let cashBalance = 0.50;   
         let currentBet = 100;
+        let totalSpins = 0;       // Contador de tiradas realizadas
+        let vipLevel = 1;         // Nivel VIP inicial
         let currentMachineKey = 'neon';
         let isSpinning = false;
         let globalJackpot = 124.50;
@@ -466,18 +481,33 @@
             cash: { title: "CASH SLOTS PRO", symbols: ["💵", "💎", "🪙", "🏆", "💰"], cashRate: 0.0003 }
         };
 
+        function getVipRules() {
+            // Reglas que mejoran a medida que el jugador sube de nivel VIP
+            if (vipLevel >= 3) return { minLimit: 5.00, requiredSpins: 20 };
+            if (vipLevel === 2) return { minLimit: 10.00, requiredSpins: 35 };
+            return { minLimit: 15.00, requiredSpins: 50 }; // VIP 1 por defecto
+        }
+
         function updateUI() {
+            const rules = getVipRules();
+
             document.getElementById('balance-display').innerText = balance.toLocaleString();
             document.getElementById('cash-display').innerText = cashBalance.toFixed(2) + " €";
             document.getElementById('cashout-balance-view').innerText = cashBalance.toFixed(2) + " €";
             document.getElementById('bet-amount').innerText = `${currentBet} 🪙`;
             document.getElementById('global-jackpot').innerText = globalJackpot.toFixed(2) + " €";
+            document.getElementById('vip-badge-text').innerText = `VIP ${vipLevel}`;
+            
+            document.getElementById('req-vip-label').innerText = `VIP ${vipLevel}`;
+            document.getElementById('req-min-limit').innerText = rules.minLimit.toFixed(2) + " €";
+            document.getElementById('req-spins-count').innerText = `${totalSpins} / ${rules.requiredSpins} mín.`;
         }
 
         function openScreen(screenId) {
             if (isSpinning) return;
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
+            updateUI();
         }
 
         function openMachine(key) {
@@ -503,14 +533,23 @@
         function spinReels() {
             if (isSpinning) return;
             if (balance < currentBet) {
-                alert("Te has quedado sin fichas. Recoge tu bono diario o consigue más para continuar.");
+                alert("Te has quedado sin fichas. Recoge tu bono diario para continuar.");
                 return;
             }
 
             isSpinning = true;
             balance -= currentBet;
+            totalSpins++; // Sumamos una tirada al contador del usuario
 
-            // MÉTRICA CLAVE: Cada tirada genera una fracción de saldo real en base a la apuesta (financiado por anuncios)
+            // Subida automática de Rango VIP cada 40 tiradas
+            if (totalSpins >= 40 && vipLevel === 1) {
+                vipLevel = 2;
+                alert("⭐ ¡HAS SUBIDO A VIP 2! Tu límite mínimo de retiro y requisitos han bajado.");
+            } else if (totalSpins >= 90 && vipLevel === 2) {
+                vipLevel = 3;
+                alert("👑 ¡HAS ALCANZADO EL NIVEL VIP 3 (MÁXIMO)! Beneficios y retiros súper rápidos desbloqueados.");
+            }
+
             const m = MACHINES[currentMachineKey];
             cashBalance += currentBet * m.cashRate;
             globalJackpot += currentBet * 0.00005;
@@ -548,7 +587,7 @@
                 winBanner.innerText = `🎉 ¡PREMIO GRANDE! +${prize} Fichas`;
                 winBanner.style.color = "var(--green)";
             } else {
-                winBanner.innerText = "Sigue girando para sumar puntos";
+                winBanner.innerText = "¡Sigue sumando tiradas y experiencia VIP!";
                 winBanner.style.color = "#94a3b8";
             }
             updateUI();
@@ -556,16 +595,27 @@
 
         function requestCashout() {
             const email = document.getElementById('paypal-email').value;
+            const rules = getVipRules();
+
             if (!email || !email.includes('@')) {
                 alert("Por favor, introduce un correo electrónico válido para procesar el pago.");
                 return;
             }
-            if (cashBalance < 10.00) {
-                alert("El saldo mínimo para solicitar un retiro en efectivo es de 10.00 €.");
+
+            // 1. CONTROL DE TIRADAS MÍNIMAS
+            if (totalSpins < rules.requiredSpins) {
+                alert(`Aún no cumples la actividad mínima. Llevas ${totalSpins} tiradas y necesitas al menos ${rules.requiredSpins} en tu nivel VIP.`);
                 return;
             }
 
-            alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € registrada con éxito para ${email}! Se procesará en un plazo de 24-48 horas.`);
+            // 2. CONTROL DE RETIRADA MÍNIMA EN EUROS
+            if (cashBalance < rules.minLimit) {
+                alert(`El saldo mínimo para retirar en tu nivel actual es de ${rules.minLimit.toFixed(2)} €. Te faltan puntos acumulados.`);
+                return;
+            }
+
+            // Si pasa los controles con éxito
+            alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € enviada con éxito a ${email}! Procesando pago...`);
             cashBalance = 0;
             updateUI();
             openScreen('screen-lobby');
