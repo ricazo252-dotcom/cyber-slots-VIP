@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Deception - ¿En quién confías?</title>
+    <title>Cyber Deception - Edición Neón</title>
     <style>
         :root {
-            --bg-color: #0b0f19;
-            --panel-bg: #131b2e;
+            --bg-color: #05070f;
+            --panel-bg: rgba(19, 27, 46, 0.85);
             --accent-green: #00ff66;
-            --accent-red: #ff3366;
+            --accent-red: #ff0055;
+            --accent-cyan: #00f3ff;
             --accent-gold: #ffd700;
             --text-main: #f0f6fc;
             --text-muted: #8b949e;
@@ -24,6 +25,9 @@
 
         body {
             background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(0, 243, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(255, 0, 85, 0.08) 0%, transparent 40%);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
@@ -31,17 +35,18 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            padding: 20px;
+            padding: 15px;
         }
 
         .container {
             width: 100%;
-            max-width: 800px;
+            max-width: 480px;
             background: var(--panel-bg);
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            padding: 30px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.15), inset 0 0 15px rgba(0, 243, 255, 0.05);
+            padding: 25px;
             position: relative;
         }
 
@@ -49,21 +54,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #30363d;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
         }
 
         h1 {
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-            color: var(--accent-green);
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { text-shadow: 0 0 5px rgba(0, 243, 255, 0.3); }
+            to { text-shadow: 0 0 15px rgba(0, 243, 255, 0.8); }
         }
 
         .stats {
             display: flex;
-            gap: 15px;
-            font-size: 0.9rem;
+            gap: 12px;
+            font-size: 0.85rem;
             color: var(--text-muted);
         }
 
@@ -79,216 +91,251 @@
 
         .screen.active {
             display: block;
-            animation: fadeIn 0.4s ease-in-out;
+            animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        /* Botones y Controles */
+        /* Botones Animados */
         .btn {
-            background: linear-gradient(135deg, #238636, #2ea043);
-            color: white;
+            background: linear-gradient(135deg, #00f3ff, #0066ff);
+            color: #05070f;
             border: none;
-            padding: 12px 24px;
+            padding: 14px;
             font-size: 1rem;
-            font-weight: bold;
-            border-radius: 6px;
+            font-weight: 800;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(46, 160, 67, 0.3);
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 243, 255, 0.4);
             display: inline-block;
             text-align: center;
             text-decoration: none;
             width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(46, 160, 67, 0.5);
+        .btn:active {
+            transform: scale(0.97);
         }
 
         .btn-shop {
-            background: linear-gradient(135deg, #8957e5, #a371f7);
-            box-shadow: 0 4px 12px rgba(137, 87, 229, 0.3);
-        }
-
-        .btn-shop:hover {
-            box-shadow: 0 6px 16px rgba(137, 87, 229, 0.5);
+            background: linear-gradient(135deg, #b000ff, #ff0055);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+            margin-top: 10px;
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #da3633, #f85149);
-            box-shadow: 0 4px 12px rgba(218, 54, 51, 0.3);
+            background: linear-gradient(135deg, #ff0055, #ff5500);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
+            margin-top: 15px;
         }
 
         .menu-grid {
             display: grid;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 25px;
         }
 
-        /* Área de Juego / Partida */
+        /* Área de Juego / Log */
         .game-log {
-            background: #0d1117;
-            border: 1px solid #30363d;
+            background: rgba(5, 7, 15, 0.9);
+            border: 1px solid rgba(0, 243, 255, 0.3);
             border-radius: 8px;
-            padding: 15px;
-            height: 160px;
+            padding: 12px;
+            height: 110px;
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            margin-bottom: 20px;
-            color: #c9d1d9;
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            color: var(--accent-green);
         }
 
+        /* Cuadrícula de Personajes (Muñecos / Avatares) */
         .players-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .player-card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 10px;
+            background: rgba(22, 27, 34, 0.9);
+            border: 2px solid #30363d;
+            border-radius: 10px;
+            padding: 12px 8px;
             text-align: center;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 0.9rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .player-card:hover {
-            border-color: var(--accent-green);
+        /* Avatar de Neón Animado (El "Muñeco") */
+        .avatar-icon {
+            width: 45px;
+            height: 45px;
+            margin: 0 auto 8px auto;
+            background: #111a2e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .player-card:hover .avatar-icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 12px var(--accent-cyan);
         }
 
         .player-card.selected {
             border-color: var(--accent-gold);
-            background: #1f2937;
+            background: rgba(255, 215, 0, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .player-card.selected .avatar-icon {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 15px var(--accent-gold);
         }
 
         .player-card.eliminated {
-            opacity: 0.4;
-            text-decoration: line-through;
+            opacity: 0.3;
+            filter: grayscale(1);
             pointer-events: none;
         }
 
-        /* Tienda VIP */
+        .player-name {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Tienda VIP Visual */
         .shop-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            gap: 12px;
+            margin-top: 15px;
         }
 
         .shop-item {
-            background: #161b22;
-            border: 1px solid #30363d;
+            background: rgba(22, 27, 34, 0.9);
+            border: 1px solid rgba(176, 0, 255, 0.3);
             border-radius: 8px;
-            padding: 20px;
-            text-align: center;
+            padding: 15px;
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
+            align-items: center;
         }
 
         .shop-item h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 4px;
         }
 
         .shop-item p {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            margin-bottom: 15px;
         }
 
-        .price {
-            font-size: 1.2rem;
+        .price-tag {
             font-weight: bold;
             color: var(--accent-gold);
-            margin-bottom: 15px;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            text-align: right;
         }
 
         .back-link {
-            margin-top: 20px;
-            display: inline-block;
+            margin-top: 15px;
+            display: block;
+            text-align: center;
             color: var(--text-muted);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .back-link:hover {
-            color: var(--text-main);
+            color: var(--accent-cyan);
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Cabecera global -->
+        <!-- Cabecera -->
         <header>
             <h1>CYBER DECEPTION</h1>
             <div class="stats">
-                <div>Créditos: <span id="user-credits">100</span> CR</div>
+                <div>CR: <span id="user-credits">100</span></div>
                 <div>Rango: <span id="user-rank">Agente</span></div>
             </div>
         </header>
 
         <!-- PANTALLA 1: MENÚ PRINCIPAL -->
         <div id="screen-menu" class="screen active">
-            <h2 style="font-size: 1.2rem; margin-bottom: 10px; color: var(--text-main);">Uno de los 6 agentes es un traidor.</h2>
-            <p style="margin-bottom: 20px; color: var(--text-muted); line-height: 1.5;">Analiza el tráfico de la red, desenmascara al infiltrado antes de que sabotee el sistema y acumula créditos para subir de rango.</p>
+            <h2 style="font-size: 1.1rem; margin-bottom: 8px; color: var(--accent-cyan);">Infiltrado en la Red Detectado</h2>
+            <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.85rem; line-height: 1.4;">Hay 6 agentes conectados. Uno de ellos oculta código malicioso. Analiza los nodos, descubre al traidor y gana recompensas.</p>
             <div class="menu-grid">
-                <button class="btn" onclick="startGame()">Buscar Sala Pública (Gratis)</button>
-                <button class="btn btn-shop" onclick="switchScreen('screen-shop')">Tienda VIP & Pases Exclusivos</button>
+                <button class="btn" onclick="startGame()">▶ Iniciar Sala Pública</button>
+                <button class="btn btn-shop" onclick="switchScreen('screen-shop')">⚡ Tienda VIP & Pases</button>
             </div>
         </div>
 
-        <!-- PANTALLA 2: PARTIDA EN CURSO -->
+        <!-- PANTALLA 2: PARTIDA CON AVATARES ANIMADOS -->
         <div id="screen-game" class="screen">
-            <h2 id="game-status-title" style="margin-bottom: 15px; font-size: 1.2rem;">Fase de Análisis: Busca al Infiltrado</h2>
+            <h2 id="game-status-title" style="margin-bottom: 10px; font-size: 1rem; color: var(--accent-cyan);">Fase: Escaneo de Infiltrados</h2>
             <div class="game-log" id="game-log">
-                [Sistema] Inicializando conexión segura con Cyber Deception...<br>
-                [Sistema] 6 agentes detectados en la sala.<br>
+                [SYS] Conexión segura establecida...<br>
+                [SYS] Analizando avatares de red (6 activos).<br>
             </div>
 
-            <p style="margin-bottom: 10px; font-size: 0.9rem; color: var(--text-muted);">Selecciona a un agente sospechoso para votar su expulsión:</p>
+            <p style="margin-bottom: 8px; font-size: 0.8rem; color: var(--text-muted);">Toca un avatar sospechoso para votar su expulsión:</p>
             <div class="players-grid" id="players-container">
-                <!-- Generado por JS -->
+                <!-- Generado por JS con avatares gráficos -->
             </div>
             
-            <button class="btn btn-danger" id="btn-action" onclick="executeVote()" style="display:none;">Confirmar Voto</button>
+            <button class="btn btn-danger" id="btn-action" onclick="executeVote()" style="display:none;">Confirmar Expulsión</button>
         </div>
 
-        <!-- PANTALLA 3: TIENDA VIP Y MONETIZACIÓN -->
+        <!-- PANTALLA 3: TIENDA VIP -->
         <div id="screen-shop" class="screen">
-            <h2 style="margin-bottom: 10px;">Tienda de Personalización y Pases</h2>
-            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 15px;">Apoya el desarrollo de Cyber Deception y destaca en las salas públicas con cosméticos únicos.</p>
+            <h2 style="margin-bottom: 8px; color: var(--accent-cyan);">Tienda de Pases VIP</h2>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Desbloquea aspectos de neón exclusivos y sube de nivel rápido.</p>
             
             <div class="shop-grid">
                 <div class="shop-item">
                     <div>
-                        <h3>Pase de Batalla VIP</h3>
-                        <p>Desbloquea avatares animados exclusivos, acceso a torneos y nombre dorado.</p>
+                        <h3>Pase VIP Neón</h3>
+                        <p>Avatares exclusivos y nombre dorado.</p>
                     </div>
                     <div>
-                        <div class="price">4.99 €</div>
-                        <button class="btn btn-shop" onclick="buyItem('Pase VIP', 500)">Comprar (500 CR)</button>
+                        <div class="price-tag">500 CR</div>
+                        <button class="btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="buyItem('Pase VIP', 500)">Comprar</button>
                     </div>
                 </div>
                 <div class="shop-item">
                     <div>
-                        <h3>Pack de Créditos (500 CR)</h3>
-                        <p>Recarga instantánea para desbloquear objetos y recompensas especiales.</p>
+                        <h3>Pack +500 Créditos</h3>
+                        <p>Recarga instantánea de saldo.</p>
                     </div>
                     <div>
-                        <div class="price">1.99 €</div>
-                        <button class="btn" onclick="buyCredits(500)">Obtener CR</button>
+                        <div class="price-tag">1.99 €</div>
+                        <button class="btn" style="padding: 6px 12px; font-size: 0.8rem;" onclick="buyCredits(500)">Obtener</button>
                     </div>
                 </div>
             </div>
@@ -299,13 +346,15 @@
     <script>
         let credits = 100;
         let selectedPlayer = null;
+        
+        // Lista de agentes con iconos de avatares estilo gamer/ciberpunk
         let players = [
-            { id: 1, name: "Agent_Vortex", isTraitor: false, eliminated: false },
-            { id: 2, name: "CyberGhost", isTraitor: false, eliminated: false },
-            { id: 3, name: "NullPointer", isTraitor: false, eliminated: false },
-            { id: 4, name: "RootAccess", isTraitor: false, eliminated: false },
-            { id: 5, name: "Firewall01", isTraitor: false, eliminated: false },
-            { id: 6, name: "GlitchNode", isTraitor: false, eliminated: false }
+            { id: 1, name: "Vortex", icon: "🛡️", isTraitor: false, eliminated: false },
+            { id: 2, name: "Ghost9", icon: "👤", isTraitor: false, eliminated: false },
+            { id: 3, name: "NullPtr", icon: "💻", isTraitor: false, eliminated: false },
+            { id: 4, name: "RootX", icon: "⚡", isTraitor: false, eliminated: false },
+            { id: 5, name: "Firewall", icon: "🛡️", isTraitor: false, eliminated: false },
+            { id: 6, name: "Glitch", icon: "👾", isTraitor: false, eliminated: false }
         ];
 
         function switchScreen(screenId) {
@@ -315,7 +364,6 @@
 
         function startGame() {
             switchScreen('screen-game');
-            // Asignar traidor aleatorio
             const traitorIndex = Math.floor(Math.random() * players.length);
             players.forEach((p, index) => {
                 p.eliminated = false;
@@ -324,9 +372,9 @@
             selectedPlayer = null;
             document.getElementById('btn-action').style.display = 'none';
             renderPlayers();
-            addLog("[Sistema] Partida iniciada. Analizando flujos de datos...");
+            addLog("[SYS] Partida iniciada. Buscando anomalías...");
             setTimeout(() => {
-                addLog("[Alerta] Se han detectado anomalías en el cortafuegos. ¡Uno oculta código malicioso!");
+                addLog("[ALERTA] Se detectó tráfico alterado en la red principal.");
             }, 1000);
         }
 
@@ -336,7 +384,10 @@
             players.forEach(p => {
                 const card = document.createElement('div');
                 card.className = `player-card ${p.eliminated ? 'eliminated' : ''} ${selectedPlayer === p.id ? 'selected' : ''}`;
-                card.innerHTML = `<strong>${p.name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${p.eliminated ? 'Eliminado' : 'Activo'}</span>`;
+                card.innerHTML = `
+                    <div class="avatar-icon">${p.icon}</div>
+                    <div class="player-name">${p.name}</div>
+                `;
                 if (!p.eliminated) {
                     card.onclick = () => selectPlayer(p.id);
                 }
@@ -358,24 +409,24 @@
             renderPlayers();
             document.getElementById('btn-action').style.display = 'none';
 
-            addLog(`[Votación] Has expulsado a ${p.name}.`);
+            addLog(`[VOTO] Expulsando al nodo ${p.name}...`);
 
             setTimeout(() => {
                 if (p.isTraitor) {
-                    addLog(`[¡Victoria!] ¡Has descubierto al traidor! +50 Créditos.`);
+                    addLog(`[¡VICTORIA!] ¡Era el traidor! +50 CR.`);
                     credits += 50;
                     updateStats();
                 } else {
-                    addLog(`[Derrota] ${p.name} era inocente... El traidor logró escapar.`);
+                    addLog(`[DERROTA] ${p.name} era inocente. El traidor escapó.`);
                 }
                 selectedPlayer = null;
                 setTimeout(() => {
-                    if(confirm("¿Quieres jugar otra partida?")) {
+                    if(confirm("¿Jugar otra ronda en la red?")) {
                         startGame();
                     } else {
                         switchScreen('screen-menu');
                     }
-                }, 1500);
+                }, 1200);
             }, 1000);
         }
 
@@ -389,8 +440,6 @@
             document.getElementById('user-credits').innerText = credits;
             if (credits >= 300) {
                 document.getElementById('user-rank').innerText = "Inspector";
-            } else if (credits >= 150) {
-                document.getElementById('user-rank').innerText = "Investigador";
             }
         }
 
@@ -398,9 +447,9 @@
             if (credits >= cost) {
                 credits -= cost;
                 updateStats();
-                alert(`¡Has adquirido con éxito: ${item}!`);
+                alert(`¡Desbloqueado con éxito: ${item}!`);
             } else {
-                alert("No tienes suficientes créditos. ¡Gana partidas o consigue recargas en la tienda!");
+                alert("Créditos insuficientes. ¡Gana partidas para conseguirlos!");
             }
         }
 
