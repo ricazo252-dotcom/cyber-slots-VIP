@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBER ROYALE - ULTRA EDITION</title>
+    <title>CYBER ROYALE - ULTRA STORE EDITION</title>
     <style>
         * {
             box-sizing: border-box;
@@ -29,11 +29,11 @@
             height: 100%;
         }
 
-        /* LOBBY / MENÚ PRINCIPAL CINEMATOGRÁFICO */
-        #lobby-screen {
+        /* LOBBY / MENÚ PRINCIPAL CON TIENDA */
+        .screen {
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle at center, rgba(10, 20, 40, 0.95), rgba(2, 4, 9, 0.99));
+            background: radial-gradient(circle at center, rgba(10, 20, 40, 0.96), rgba(2, 4, 9, 0.99));
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -41,48 +41,123 @@
             z-index: 100;
             padding: 20px;
             text-align: center;
+            overflow-y: auto;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         .game-title {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             background: linear-gradient(180deg, #ffffff 0%, #00ffff 50%, #0077ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 35px rgba(0, 243, 255, 0.6);
-            margin-bottom: 8px;
+            text-shadow: 0 0 30px rgba(0, 243, 255, 0.5);
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
         .subtitle {
             color: #94a3b8;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             max-width: 360px;
-            margin-bottom: 35px;
-            line-height: 1.5;
+            margin-bottom: 25px;
+            line-height: 1.4;
         }
 
-        .play-btn {
+        .user-stats-bar {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(0, 243, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .user-stats-bar span {
+            color: #facc15;
+            font-weight: bold;
+        }
+
+        .menu-btn {
             background: linear-gradient(135deg, #00f3ff 0%, #0066ff 100%);
             color: #020409;
-            font-size: 1.35rem;
+            font-size: 1.2rem;
             font-weight: 900;
-            padding: 18px 52px;
+            padding: 16px 42px;
             border: none;
-            border-radius: 14px;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.5);
+            border-radius: 12px;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.5);
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+            width: 100%;
+            max-width: 280px;
             transition: transform 0.15s;
         }
 
-        .play-btn:active {
-            transform: scale(0.95);
+        .menu-btn:active {
+            transform: scale(0.96);
         }
 
-        /* INTERFAZ EN PARTIDA (HUD) */
+        .btn-shop {
+            background: linear-gradient(135deg, #b000ff 0%, #7928ca 100%);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(176, 0, 255, 0.5);
+        }
+
+        /* TIENDA / COMPRAS */
+        .shop-container {
+            width: 100%;
+            max-width: 440px;
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .shop-card {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(176, 0, 255, 0.4);
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .shop-card h3 {
+            font-size: 0.95rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .shop-card p {
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .buy-btn {
+            background: linear-gradient(135deg, #facc15, #ca8a04);
+            color: #020409;
+            font-weight: 900;
+            font-size: 0.8rem;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+            white-space: nowrap;
+        }
+
+        /* HUD EN PARTIDA */
         #hud {
             position: absolute;
             inset: 0;
@@ -91,7 +166,6 @@
             z-index: 10;
         }
 
-        /* Mira central futurista */
         #crosshair {
             position: absolute;
             top: 46%;
@@ -99,10 +173,9 @@
             width: 24px;
             height: 24px;
             transform: translate(-50%, -50%);
-            border: 2px solid rgba(0, 243, 255, 0.75);
+            border: 2px solid rgba(0, 243, 255, 0.8);
             border-radius: 50%;
             box-shadow: 0 0 10px rgba(0, 243, 255, 0.8);
-            transition: transform 0.1s;
         }
 
         #crosshair::after {
@@ -115,10 +188,8 @@
             background: #ff0055;
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 6px #ff0055;
         }
 
-        /* Panel superior: Vivos y Bajas */
         .top-bar {
             position: absolute;
             top: 16px;
@@ -135,15 +206,12 @@
             font-size: 0.85rem;
             font-weight: 800;
             backdrop-filter: blur(6px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
         }
 
         .stat-pill span {
             color: #00f3ff;
-            text-shadow: 0 0 8px rgba(0, 243, 255, 0.5);
         }
 
-        /* Barras de Vida y Escudo Holográficas */
         .bars-container {
             position: absolute;
             top: 16px;
@@ -162,7 +230,6 @@
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.2);
             position: relative;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
         }
 
         .bar-fill {
@@ -170,8 +237,8 @@
             transition: width 0.2s;
         }
 
-        #shield-bar { background: linear-gradient(90deg, #0284c7, #00f3ff); width: 100%; box-shadow: 0 0 10px #00f3ff; }
-        #hp-bar { background: linear-gradient(90deg, #16a34a, #4ade80); width: 100%; box-shadow: 0 0 10px #4ade80; }
+        #shield-bar { background: linear-gradient(90deg, #0284c7, #00f3ff); width: 100%; }
+        #hp-bar { background: linear-gradient(90deg, #16a34a, #4ade80); width: 100%; }
 
         .bar-text {
             position: absolute;
@@ -182,10 +249,8 @@
             align-items: center;
             justify-content: center;
             text-shadow: 0 1px 3px #000;
-            letter-spacing: 0.5px;
         }
 
-        /* Selector de Armas Inferior */
         .weapons-dock {
             position: absolute;
             bottom: 18px;
@@ -210,13 +275,11 @@
             font-weight: 800;
             cursor: pointer;
             transition: 0.15s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         .weapon-slot.active {
             border-color: #00f3ff;
             background: rgba(0, 243, 255, 0.2);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.5);
             transform: translateY(-4px);
         }
 
@@ -226,7 +289,6 @@
             margin-top: 2px;
         }
 
-        /* CONTROLES TÁCTILES */
         #joystick-zone {
             position: absolute;
             bottom: 25px;
@@ -250,10 +312,8 @@
             border: 2px solid #fff;
             border-radius: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.8);
         }
 
-        /* Zona derecha para girar cámara */
         #camera-zone {
             position: absolute;
             top: 0;
@@ -264,7 +324,6 @@
             z-index: 5;
         }
 
-        /* Botones de Acción (Disparar, Saltar, Recargar) */
         .action-buttons {
             position: absolute;
             bottom: 25px;
@@ -301,11 +360,6 @@
             background: linear-gradient(135deg, rgba(255, 0, 85, 0.9), rgba(200, 0, 50, 0.9));
             font-size: 0.95rem;
             border-color: #ff88aa;
-            box-shadow: 0 0 20px rgba(255, 0, 85, 0.6);
-        }
-
-        #btn-fire:active {
-            transform: scale(0.92);
         }
 
         #btn-jump {
@@ -313,7 +367,6 @@
             height: 58px;
             background: rgba(15, 23, 42, 0.85);
             font-size: 0.75rem;
-            border-color: rgba(0, 243, 255, 0.4);
         }
 
         #btn-reload {
@@ -321,10 +374,8 @@
             height: 52px;
             background: rgba(14, 116, 144, 0.85);
             font-size: 0.7rem;
-            border-color: rgba(56, 189, 248, 0.4);
         }
 
-        /* Feed de notificaciones de combate */
         #kill-feed {
             position: absolute;
             top: 68px;
@@ -334,42 +385,54 @@
             font-weight: 800;
             text-shadow: 0 0 8px rgba(0, 243, 255, 0.6);
         }
-
-        /* Pantalla Final */
-        #end-screen {
-            position: absolute;
-            inset: 0;
-            background: rgba(2, 4, 9, 0.95);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 150;
-            text-align: center;
-            padding: 20px;
-        }
-
-        #end-title {
-            font-size: 2.6rem;
-            font-weight: 900;
-            margin-bottom: 10px;
-            text-transform: uppercase;
-        }
-
-        #end-stats {
-            color: #cbd5e1;
-            margin-bottom: 25px;
-            font-size: 1.1rem;
-        }
     </style>
 </head>
 <body>
 
-    <!-- LOBBY INICIAL -->
-    <div id="lobby-screen">
+    <!-- MENÚ PRINCIPAL -->
+    <div id="lobby-screen" class="screen">
         <div class="game-title">CYBER ROYALE</div>
-        <p class="subtitle">Edición Ultra Gráfica. Entorno 3D con iluminación volumétrica de neón, partículas de combate y enemigos tácticos avanzados.</p>
-        <button class="play-btn" onclick="startMatch()">¡ENTRAR AL COMBATE!</button>
+        <p class="subtitle">Arena Táctica 3D Avanzada. Supervivencia online con efectos cinemáticos y tienda integrada.</p>
+        
+        <div class="user-stats-bar">
+            <div>CRÉDITOS: <span id="user-credits">250</span> CR</div>
+            <div>RANGO: <span>ÉLITE</span></div>
+        </div>
+
+        <button class="menu-btn" onclick="startMatch()">▶ JUGAR PARTIDA</button>
+        <button class="menu-btn btn-shop" onclick="openShop()">⚡ TIENDA & COMPRAS VIP</button>
+    </div>
+
+    <!-- PANTALLA DE TIENDA Y COMPRAS -->
+    <div id="shop-screen" class="screen hidden">
+        <div class="game-title" style="font-size: 2rem;">TIENDA VIP</div>
+        <p class="subtitle">Adquiere pases exclusivos y recarga créditos de combate instantáneamente.</p>
+
+        <div class="shop-container">
+            <div class="shop-card">
+                <div>
+                    <h3>Pase de Batalla VIP</h3>
+                    <p>Desbloquea aspectos dorados y bonificación de EXP x2.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('Pase VIP', 500)">500 CR</button>
+            </div>
+            <div class="shop-card">
+                <div>
+                    <h3>Pack +1000 Créditos</h3>
+                    <p>Recarga instantánea para tu cuenta de jugador.</p>
+                </div>
+                <button class="buy-btn" onclick="buyCredits(1000)">2.99 €</button>
+            </div>
+            <div class="shop-card">
+                <div>
+                    <h3>Skin de Arma: Láser Cíclope</h3>
+                    <p>Modifica el color y daño visual de tus disparos.</p>
+                </div>
+                <button class="buy-btn" onclick="buyItem('Skin Láser', 300)">300 CR</button>
+            </div>
+        </div>
+
+        <button class="menu-btn" onclick="closeShop()" style="max-width: 200px; padding: 12px;">VOLVER</button>
     </div>
 
     <!-- CANVAS 3D -->
@@ -397,15 +460,12 @@
             <div class="stat-pill">BAJAS: <span id="kills-count">0</span></div>
         </div>
 
-        <!-- Zona derecha para girar cámara -->
         <div id="camera-zone"></div>
 
-        <!-- Joystick izquierdo -->
         <div id="joystick-zone">
             <div id="joystick-knob"></div>
         </div>
 
-        <!-- Selector de armas -->
         <div class="weapons-dock">
             <div class="weapon-slot active" id="slot-0" onclick="selectWeapon(0)">
                 <div>PISTOLA</div>
@@ -421,7 +481,6 @@
             </div>
         </div>
 
-        <!-- Botones de acción -->
         <div class="action-buttons">
             <div class="action-row">
                 <div class="btn-circle" id="btn-reload" onclick="reloadWeapon()">REC</div>
@@ -432,21 +491,49 @@
     </div>
 
     <!-- PANTALLA FIN DE PARTIDA -->
-    <div id="end-screen">
-        <div id="end-title">¡VICTORIA MAGISTRAL!</div>
-        <div id="end-stats">Eliminaciones: 0</div>
-        <button class="play-btn" onclick="location.reload()">MENÚ PRINCIPAL</button>
+    <div id="end-screen" class="screen hidden" style="background: rgba(2, 4, 9, 0.96);">
+        <div id="end-title" class="game-title">¡VICTORIA MAGISTRAL!</div>
+        <div id="end-stats" style="color: #cbd5e1; margin-bottom: 25px; font-size: 1.1rem;">Eliminaciones: 0</div>
+        <button class="menu-btn" onclick="location.reload()">MENÚ PRINCIPAL</button>
     </div>
 
     <!-- THREE.JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <script>
-        // CONFIGURACIÓN DE ARMAS
+        let userCredits = 250;
+
+        function openShop() {
+            document.getElementById('lobby-screen').classList.add('hidden');
+            document.getElementById('shop-screen').classList.remove('hidden');
+        }
+
+        function closeShop() {
+            document.getElementById('shop-screen').classList.add('hidden');
+            document.getElementById('lobby-screen').classList.remove('hidden');
+        }
+
+        function buyItem(name, cost) {
+            if (userCredits >= cost) {
+                userCredits -= cost;
+                document.getElementById('user-credits').innerText = userCredits;
+                alert(`¡Has adquirido con éxito: ${name}!`);
+            } else {
+                alert("Créditos insuficientes. ¡Gana partidas o recarga en la tienda!");
+            }
+        }
+
+        function buyCredits(amount) {
+            userCredits += amount;
+            document.getElementById('user-credits').innerText = userCredits;
+            alert(`¡Compra procesada con éxito! Se han añadido ${amount} créditos.`);
+        }
+
+        // CONFIGURACIÓN DE ARMAS Y MOTOR 3D
         const WEAPONS = [
-            { name: "Pistola", damage: 30, fireRate: 260, maxAmmo: 12, ammo: 12, spread: 0.012, pellets: 1, color: 0x00f3ff },
-            { name: "Rifle", damage: 20, fireRate: 110, maxAmmo: 30, ammo: 30, spread: 0.025, pellets: 1, color: 0xfacc15 },
-            { name: "Escopeta", damage: 19, fireRate: 700, maxAmmo: 6, ammo: 6, spread: 0.1, pellets: 6, color: 0xff5500 }
+            { name: "Pistola", damage: 32, fireRate: 250, maxAmmo: 12, ammo: 12, spread: 0.01, pellets: 1, color: 0x00f3ff },
+            { name: "Rifle", damage: 22, fireRate: 100, maxAmmo: 30, ammo: 30, spread: 0.02, pellets: 1, color: 0xfacc15 },
+            { name: "Escopeta", damage: 20, fireRate: 650, maxAmmo: 6, ammo: 6, spread: 0.09, pellets: 6, color: 0xff5500 }
         ];
 
         let currentWeapon = 0;
@@ -484,26 +571,17 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
             renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-            // ILUMINACIÓN CINEMATOGRÁFICA
-            const ambientLight = new THREE.AmbientLight(0x0f172a, 1.2);
+            const ambientLight = new THREE.AmbientLight(0x0f172a, 1.3);
             scene.add(ambientLight);
 
-            const sunLight = new THREE.DirectionalLight(0x00f3ff, 1.4);
+            const sunLight = new THREE.DirectionalLight(0x00f3ff, 1.5);
             sunLight.position.set(40, 70, 40);
             sunLight.castShadow = true;
-            sunLight.shadow.mapSize.width = 1024;
-            sunLight.shadow.mapSize.height = 1024;
             scene.add(sunLight);
 
-            const pointLight = new THREE.PointLight(0xff0055, 2, 80);
-            pointLight.position.set(0, 15, 0);
-            scene.add(pointLight);
-
-            // SUELO REFLECTANTE CON LÍNEAS DE NEÓN
             const floorGeo = new THREE.PlaneGeometry(180, 180);
-            const floorMat = new THREE.MeshStandardMaterial({ color: 0x080c16, roughness: 0.4, metalness: 0.2 });
+            const floorMat = new THREE.MeshStandardMaterial({ color: 0x080c16, roughness: 0.4 });
             const floor = new THREE.Mesh(floorGeo, floorMat);
             floor.rotation.x = -Math.PI / 2;
             floor.receiveShadow = true;
@@ -515,20 +593,12 @@
 
             createAdvancedMap();
 
-            // JUGADOR
             playerMesh = createAdvancedCharacter(0x00f3ff, 0xff0055);
             playerMesh.position.set(0, 0, 0);
             scene.add(playerMesh);
 
-            // 9 ENEMIGOS TÁCTICOS
-            for (let i = 0; i < 9; i++) {
-                spawnEnemy();
-            }
-
-            // BOTIQUINES Y ESCUDOS
-            for (let i = 0; i < 14; i++) {
-                spawnPickup(i % 2 === 0 ? 'shield' : 'hp');
-            }
+            for (let i = 0; i < 9; i++) spawnEnemy();
+            for (let i = 0; i < 14; i++) spawnPickup(i % 2 === 0 ? 'shield' : 'hp');
 
             setupControls();
             window.addEventListener('resize', onWindowResize);
@@ -536,8 +606,7 @@
 
         function createAdvancedCharacter(bodyColor, visorColor) {
             const group = new THREE.Group();
-
-            const matBody = new THREE.MeshStandardMaterial({ color: 0x111827, metalness: 0.4, roughness: 0.3 });
+            const matBody = new THREE.MeshStandardMaterial({ color: 0x111827, metalness: 0.5, roughness: 0.3 });
             const matArmor = new THREE.MeshStandardMaterial({ color: bodyColor, metalness: 0.6, roughness: 0.2 });
 
             const legGeo = new THREE.BoxGeometry(0.26, 0.75, 0.26);
@@ -561,7 +630,7 @@
             visor.position.set(0, 1.84, -0.21);
 
             const gunGeo = new THREE.BoxGeometry(0.12, 0.16, 0.7);
-            const gunMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, metalness: 0.8 });
+            const gunMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, metalness: 0.9 });
             const gun = new THREE.Mesh(gunGeo, gunMat);
             gun.position.set(0.45, 1.2, -0.35);
 
@@ -571,10 +640,9 @@
         }
 
         function createAdvancedMap() {
-            const wallMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5, metalness: 0.3 });
+            const wallMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.5 });
             const neonMat = new THREE.MeshBasicMaterial({ color: 0x00f3ff });
 
-            // Muros exteriores
             const boundaries = [
                 { x: 0, z: -88, w: 180, h: 10, d: 4 },
                 { x: 0, z: 88, w: 180, h: 10, d: 4 },
@@ -589,10 +657,9 @@
                 obstacles.push({ x: b.x, z: b.z, hw: b.w / 2, hd: b.d / 2 });
             });
 
-            // Estructuras y edificios con luces de neón
-            for (let i = 0; i < 28; i++) {
-                const w = 3.5 + Math.random() * 6;
-                const d = 3.5 + Math.random() * 6;
+            for (let i = 0; i < 26; i++) {
+                const w = 4 + Math.random() * 5;
+                const d = 4 + Math.random() * 5;
                 const h = 3 + Math.random() * 5;
                 let x = (Math.random() - 0.5) * 140;
                 let z = (Math.random() - 0.5) * 140;
@@ -601,7 +668,6 @@
                 const block = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), wallMat);
                 block.position.set(x, h / 2, z);
                 block.castShadow = true;
-                block.receiveShadow = true;
                 scene.add(block);
 
                 const trim = new THREE.Mesh(new THREE.BoxGeometry(w + 0.1, 0.12, d + 0.1), neonMat);
@@ -626,7 +692,7 @@
             enemies.push({
                 mesh: enemy,
                 hp: 100,
-                speed: 4.5 + Math.random() * 1.8,
+                speed: 4.5 + Math.random() * 1.5,
                 dirAngle: Math.random() * Math.PI * 2,
                 lastShot: 0,
                 aiTimer: 0
@@ -643,7 +709,7 @@
         }
 
         function startMatch() {
-            document.getElementById('lobby-screen').style.display = 'none';
+            document.getElementById('lobby-screen').classList.add('hidden');
             document.getElementById('hud').style.display = 'block';
             if (!scene) init3D();
             gameActive = true;
@@ -707,20 +773,10 @@
                 dir.z += (Math.random() - 0.5) * w.spread;
                 dir.normalize();
 
-                spawnBullet(
-                    playerMesh.position.x,
-                    playerMesh.position.y + 1.35,
-                    playerMesh.position.z,
-                    dir,
-                    w.damage,
-                    true,
-                    w.color
-                );
+                spawnBullet(playerMesh.position.x, playerMesh.position.y + 1.35, playerMesh.position.z, dir, w.damage, true, w.color);
             }
 
-            // Destello de disparo y partículas
             spawnSparks(playerMesh.position.x + forward.x * 0.8, playerMesh.position.y + 1.35, playerMesh.position.z + forward.z * 0.8, w.color);
-
             if (w.ammo === 0) reloadWeapon();
         }
 
@@ -734,7 +790,7 @@
         }
 
         function spawnSparks(x, y, z, color) {
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 5; i++) {
                 const pGeo = new THREE.SphereGeometry(0.06, 4, 4);
                 const pMat = new THREE.MeshBasicMaterial({ color: color });
                 const pMesh = new THREE.Mesh(pGeo, pMat);
@@ -742,17 +798,15 @@
                 scene.add(pMesh);
                 particles.push({
                     mesh: pMesh,
-                    vel: new THREE.Vector3((Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6, (Math.random() - 0.5) * 6),
-                    life: 0.3
+                    vel: new THREE.Vector3((Math.random() - 0.5) * 5, (Math.random() - 0.5) * 5, (Math.random() - 0.5) * 5),
+                    life: 0.25
                 });
             }
         }
 
         function checkCollision(x, z, radius = 0.65) {
             for (let obs of obstacles) {
-                if (Math.abs(x - obs.x) < obs.hw + radius && Math.abs(z - obs.z) < obs.hd + radius) {
-                    return true;
-                }
+                if (Math.abs(x - obs.x) < obs.hw + radius && Math.abs(z - obs.z) < obs.hd + radius) return true;
             }
             return false;
         }
@@ -866,7 +920,7 @@
             title.innerText = victory ? "¡VICTORIA MAGISTRAL!" : "HAS SIDO ELIMINADO";
             title.style.color = victory ? "#00f3ff" : "#ff0055";
             document.getElementById('end-stats').innerText = `Eliminaciones totales: ${kills}`;
-            endScreen.style.display = 'flex';
+            endScreen.classList.remove('hidden');
         }
 
         let prevTime = performance.now();
@@ -881,7 +935,6 @@
 
             if (isFiring) fireWeapon();
 
-            // MOVIMIENTO
             const speed = 11.5;
             const forwardX = -Math.sin(yaw);
             const forwardZ = -Math.cos(yaw);
@@ -891,14 +944,9 @@
             const moveX = (forwardX * -moveInput.z + rightX * moveInput.x) * speed * dt;
             const moveZ = (forwardZ * -moveInput.z + rightZ * moveInput.x) * speed * dt;
 
-            if (!checkCollision(playerMesh.position.x + moveX, playerMesh.position.z)) {
-                playerMesh.position.x += moveX;
-            }
-            if (!checkCollision(playerMesh.position.x, playerMesh.position.z + moveZ)) {
-                playerMesh.position.z += moveZ;
-            }
+            if (!checkCollision(playerMesh.position.x + moveX, playerMesh.position.z)) playerMesh.position.x += moveX;
+            if (!checkCollision(playerMesh.position.x, playerMesh.position.z + moveZ)) playerMesh.position.z += moveZ;
 
-            // GRAVEDAD Y SALTO
             velocityY -= 26 * dt;
             playerMesh.position.y += velocityY * dt;
             if (playerMesh.position.y <= 0) {
@@ -909,7 +957,6 @@
 
             playerMesh.rotation.y = yaw;
 
-            // ANIMACIÓN DE CORREO
             if (Math.hypot(moveInput.x, moveInput.z) > 0.1) {
                 const swing = Math.sin(now * 0.016) * 0.55;
                 playerMesh.userData.leftLeg.rotation.x = swing;
@@ -919,7 +966,6 @@
                 playerMesh.userData.rightLeg.rotation.x = 0;
             }
 
-            // CÁMARA
             const camDist = 4.8;
             const camHeight = 2.5 + pitch * 2.4;
             const targetCamX = playerMesh.position.x + Math.sin(yaw) * camDist + Math.cos(yaw) * 0.6;
@@ -927,26 +973,21 @@
             const targetCamY = playerMesh.position.y + camHeight;
 
             camera.position.lerp(new THREE.Vector3(targetCamX, targetCamY, targetCamZ), 0.25);
-            camera.lookAt(
-                playerMesh.position.x - Math.sin(yaw) * 6,
-                playerMesh.position.y + 1.5 - pitch * 2,
-                playerMesh.position.z - Math.cos(yaw) * 6
-            );
+            camera.lookAt(playerMesh.position.x - Math.sin(yaw) * 6, playerMesh.position.y + 1.5 - pitch * 2, playerMesh.position.z - Math.cos(yaw) * 6);
 
-            // PICKUPS
             for (let i = pickups.length - 1; i >= 0; i--) {
                 const p = pickups[i];
                 p.mesh.rotation.y += 3 * dt;
                 if (p.mesh.position.distanceTo(playerMesh.position) < 1.6) {
                     if (p.type === 'shield' && playerShield < 100) {
                         playerShield = Math.min(100, playerShield + 35);
-                        showFeed("+35 ESCUDO HOLOGRÁFICO");
+                        showFeed("+35 ESCUDO");
                         scene.remove(p.mesh);
                         pickups.splice(i, 1);
                         updateHUD();
                     } else if (p.type === 'hp' && playerHP < 100) {
                         playerHP = Math.min(100, playerHP + 35);
-                        showFeed("+35 VIDA RECONSTRUIDA");
+                        showFeed("+35 VIDA");
                         scene.remove(p.mesh);
                         pickups.splice(i, 1);
                         updateHUD();
@@ -954,16 +995,12 @@
                 }
             }
 
-            // IA ENEMIGOS
             for (let i = enemies.length - 1; i >= 0; i--) {
                 const e = enemies[i];
                 const distToPlayer = e.mesh.position.distanceTo(playerMesh.position);
 
                 if (distToPlayer < 35) {
-                    const angleToPlayer = Math.atan2(
-                        playerMesh.position.x - e.mesh.position.x,
-                        playerMesh.position.z - e.mesh.position.z
-                    );
+                    const angleToPlayer = Math.atan2(playerMesh.position.x - e.mesh.position.x, playerMesh.position.z - e.mesh.position.z);
                     e.mesh.rotation.y = angleToPlayer + Math.PI;
 
                     if (distToPlayer > 8.5) {
@@ -975,11 +1012,7 @@
 
                     if (now - e.lastShot > 1200) {
                         e.lastShot = now;
-                        const shootDir = new THREE.Vector3(
-                            playerMesh.position.x - e.mesh.position.x,
-                            0.1,
-                            playerMesh.position.z - e.mesh.position.z
-                        ).normalize();
+                        const shootDir = new THREE.Vector3(playerMesh.position.x - e.mesh.position.x, 0.1, playerMesh.position.z - e.mesh.position.z).normalize();
                         spawnBullet(e.mesh.position.x, 1.35, e.mesh.position.z, shootDir, 12, false, 0xff0055);
                     }
                 } else {
@@ -1000,7 +1033,6 @@
                 }
             }
 
-            // PROYECTILES Y PARTÍCULAS
             for (let i = bullets.length - 1; i >= 0; i--) {
                 const b = bullets[i];
                 b.life -= dt;
@@ -1031,11 +1063,8 @@
                     if (Math.hypot(b.mesh.position.x - playerMesh.position.x, b.mesh.position.z - playerMesh.position.z) < 0.75) {
                         hit = true;
                         spawnSparks(b.mesh.position.x, b.mesh.position.y, b.mesh.position.z, 0xff0055);
-                        if (playerShield > 0) {
-                            playerShield = Math.max(0, playerShield - b.damage);
-                        } else {
-                            playerHP = Math.max(0, playerHP - b.damage);
-                        }
+                        if (playerShield > 0) playerShield = Math.max(0, playerShield - b.damage);
+                        else playerHP = Math.max(0, playerHP - b.damage);
                         updateHUD();
                         if (playerHP <= 0) endGame(false);
                     }
@@ -1051,7 +1080,7 @@
                 const p = particles[i];
                 p.life -= dt;
                 p.mesh.position.addScaledVector(p.vel, dt);
-                p.mesh.scale.multiplyScalar(0.92);
+                p.mesh.scale.multiplyScalar(0.9);
                 if (p.life <= 0) {
                     scene.remove(p.mesh);
                     particles.splice(i, 1);
