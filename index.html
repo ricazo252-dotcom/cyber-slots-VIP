@@ -102,6 +102,7 @@
             display: inline-block;
             text-align: center;
             text-decoration: none;
+            width: 100%;
         }
 
         .btn:hover {
@@ -135,17 +136,17 @@
             border: 1px solid #30363d;
             border-radius: 8px;
             padding: 15px;
-            height: 200px;
+            height: 160px;
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 20px;
             color: #c9d1d9;
         }
 
         .players-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             gap: 10px;
             margin-bottom: 20px;
         }
@@ -158,10 +159,16 @@
             text-align: center;
             cursor: pointer;
             transition: 0.2s;
+            font-size: 0.9rem;
         }
 
         .player-card:hover {
             border-color: var(--accent-green);
+        }
+
+        .player-card.selected {
+            border-color: var(--accent-gold);
+            background: #1f2937;
         }
 
         .player-card.eliminated {
@@ -267,4 +274,141 @@
                 <div class="shop-item">
                     <div>
                         <h3>Pase de Batalla VIP</h3>
-                        <p>Desbloquea avatares animados exclusivos, acceso a torneos mensuales de 100€ y nombre dorado.</p
+                        <p>Desbloquea avatares animados exclusivos, acceso a torneos y nombre dorado.</p>
+                    </div>
+                    <div>
+                        <div class="price">4.99 €</div>
+                        <button class="btn btn-shop" onclick="buyItem('Pase VIP', 500)">Comprar (500 CR)</button>
+                    </div>
+                </div>
+                <div class="shop-item">
+                    <div>
+                        <h3>Pack de Créditos (500 CR)</h3>
+                        <p>Recarga instantánea para desbloquear objetos y recompensas especiales.</p>
+                    </div>
+                    <div>
+                        <div class="price">1.99 €</div>
+                        <button class="btn" onclick="buyCredits(500)">Obtener CR</button>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="back-link" onclick="switchScreen('screen-menu')">← Volver al Menú Principal</a>
+        </div>
+    </div>
+
+    <script>
+        let credits = 100;
+        let selectedPlayer = null;
+        let players = [
+            { id: 1, name: "Agent_Vortex", isTraitor: false, eliminated: false },
+            { id: 2, name: "CyberGhost", isTraitor: false, eliminated: false },
+            { id: 3, name: "NullPointer", isTraitor: false, eliminated: false },
+            { id: 4, name: "RootAccess", isTraitor: false, eliminated: false },
+            { id: 5, name: "Firewall01", isTraitor: false, eliminated: false },
+            { id: 6, name: "GlitchNode", isTraitor: false, eliminated: false }
+        ];
+
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function startGame() {
+            switchScreen('screen-game');
+            // Asignar traidor aleatorio
+            const traitorIndex = Math.floor(Math.random() * players.length);
+            players.forEach((p, index) => {
+                p.eliminated = false;
+                p.isTraitor = (index === traitorIndex);
+            });
+            selectedPlayer = null;
+            document.getElementById('btn-action').style.display = 'none';
+            renderPlayers();
+            addLog("[Sistema] Partida iniciada. Analizando flujos de datos...");
+            setTimeout(() => {
+                addLog("[Alerta] Se han detectado anomalías en el cortafuegos. ¡Uno oculta código malicioso!");
+            }, 1000);
+        }
+
+        function renderPlayers() {
+            const container = document.getElementById('players-container');
+            container.innerHTML = '';
+            players.forEach(p => {
+                const card = document.createElement('div');
+                card.className = `player-card ${p.eliminated ? 'eliminated' : ''} ${selectedPlayer === p.id ? 'selected' : ''}`;
+                card.innerHTML = `<strong>${p.name}</strong><br><span style="font-size:0.75rem; color:var(--text-muted);">${p.eliminated ? 'Eliminado' : 'Activo'}</span>`;
+                if (!p.eliminated) {
+                    card.onclick = () => selectPlayer(p.id);
+                }
+                container.appendChild(card);
+            });
+        }
+
+        function selectPlayer(id) {
+            selectedPlayer = id;
+            renderPlayers();
+            document.getElementById('btn-action').style.display = 'block';
+        }
+
+        function executeVote() {
+            const p = players.find(x => x.id === selectedPlayer);
+            if (!p) return;
+
+            p.eliminated = true;
+            renderPlayers();
+            document.getElementById('btn-action').style.display = 'none';
+
+            addLog(`[Votación] Has expulsado a ${p.name}.`);
+
+            setTimeout(() => {
+                if (p.isTraitor) {
+                    addLog(`[¡Victoria!] ¡Has descubierto al traidor! +50 Créditos.`);
+                    credits += 50;
+                    updateStats();
+                } else {
+                    addLog(`[Derrota] ${p.name} era inocente... El traidor logró escapar.`);
+                }
+                selectedPlayer = null;
+                setTimeout(() => {
+                    if(confirm("¿Quieres jugar otra partida?")) {
+                        startGame();
+                    } else {
+                        switchScreen('screen-menu');
+                    }
+                }, 1500);
+            }, 1000);
+        }
+
+        function addLog(text) {
+            const log = document.getElementById('game-log');
+            log.innerHTML += text + "<br>";
+            log.scrollTop = log.scrollHeight;
+        }
+
+        function updateStats() {
+            document.getElementById('user-credits').innerText = credits;
+            if (credits >= 300) {
+                document.getElementById('user-rank').innerText = "Inspector";
+            } else if (credits >= 150) {
+                document.getElementById('user-rank').innerText = "Investigador";
+            }
+        }
+
+        function buyItem(item, cost) {
+            if (credits >= cost) {
+                credits -= cost;
+                updateStats();
+                alert(`¡Has adquirido con éxito: ${item}!`);
+            } else {
+                alert("No tienes suficientes créditos. ¡Gana partidas o consigue recargas en la tienda!");
+            }
+        }
+
+        function buyCredits(amount) {
+            credits += amount;
+            updateStats();
+            alert(`¡Se han añadido ${amount} Créditos a tu cuenta!`);
+        }
+    </script>
+</body>
+</html>
