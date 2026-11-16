@@ -76,7 +76,6 @@
             border-radius: 12px;
         }
 
-        /* BOTÓN FLOTANTE DE MÚSICA */
         .music-float-btn {
             background: rgba(17, 22, 43, 0.9);
             border: 2px solid var(--cyan);
@@ -358,12 +357,6 @@
 </head>
 <body>
 
-    <!-- REPRODUCTOR DE AUDIO DE FONDO (Sintetizador Web de música ambiental) -->
-    <audio id="bg-music" loop>
-        <!-- Enlace libre de derechos de música synthwave espacial/electrónica para ambiente de juego -->
-        <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf756.mp3?filename=cyberpunk-2099-10701.mp3" type="audio/mpeg">
-    </audio>
-
     <!-- BARRA SUPERIOR -->
     <div class="top-hud">
         <div class="currency-box coin-val" onclick="openScreen('screen-lobby')">
@@ -493,6 +486,10 @@
         let currentMachineKey = 'neon';
         let isSpinning = false;
         let globalJackpot = 124.50;
+        
+        // SINTETIZADOR DE MÚSICA WEB (AUDIO NATIVO JS)
+        let audioCtx = null;
+        let musicInterval = null;
         let musicPlaying = false;
 
         const MACHINES = {
@@ -500,26 +497,58 @@
             cash: { title: "CASH SLOTS PRO", symbols: ["💵", "💎", "🪙", "🏆", "💰"], cashRate: 0.0003 }
         };
 
-        // CONTROL DE MÚSICA AMBIENTAL
         function toggleMusic() {
-            const music = document.getElementById('bg-music');
             const btn = document.getElementById('music-btn');
 
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
             if (musicPlaying) {
-                music.pause();
+                clearInterval(musicInterval);
                 musicPlaying = false;
                 btn.innerText = "🔇 Mute";
                 btn.classList.add('off');
             } else {
-                music.play().then(() => {
-                    musicPlaying = true;
-                    btn.innerText = "🎵 Música";
-                    btn.classList.remove('off');
-                }).catch(e => {
-                    console.log("Error al reproducir audio:", e);
-                    alert("Pulsa de nuevo en la pantalla para permitir la reproducción de audio.");
-                });
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                musicPlaying = true;
+                btn.innerText = "🎵 Música";
+                btn.classList.remove('off');
+                startCyberLoop();
             }
+        }
+
+        // Generador de notas musicales automáticas estilo Synthwave
+        function startCyberLoop() {
+            const notes = [220, 246.94, 277.18, 329.63, 369.99, 440]; // Escala armónica espacial
+            let step = 0;
+
+            musicInterval = setInterval(() => {
+                if (!musicPlaying) return;
+                
+                try {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+
+                    osc.type = 'sine'; // Sonido suave tipo sintetizador
+                    osc.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
+
+                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
+
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.8);
+
+                    step++;
+                } catch(e) {
+                    console.log("Audio loop error", e);
+                }
+            }, 600); // Toca una nota cada 0.6 segundos creando un ambiente continuo
         }
 
         function getVipRules() {
@@ -625,12 +654,9 @@
                 clearInterval(interval);
                 const res = [
                     m.symbols[Math.floor(Math.random() * m.symbols.length)],
-                    m.symbols[Math.floor(Math.range ? Math.range(0, m.symbols.length) : Math.floor(Math.random() * m.symbols.length))],
+                    m.symbols[Math.floor(Math.random() * m.symbols.length)],
                     m.symbols[Math.floor(Math.random() * m.symbols.length)]
                 ];
-                // Asegurando correcta selección aleatoria en el array
-                res[1] = m.symbols[Math.floor(Math.random() * m.symbols.length)];
-                
                 reels.forEach((r, idx) => r.innerText = res[idx]);
 
                 evaluateWin(res);
