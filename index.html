@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBER VEGAS - VIP & MUSIC</title>
+    <title>CYBER VEGAS - VIP CASINO</title>
     <style>
         :root {
             --bg-dark: #070913;
@@ -13,7 +13,6 @@
             --pink: #ff007f;
             --green: #00ff66;
             --cash: #10b981;
-            --ad-purple: #8b5cf6;
         }
 
         * {
@@ -88,13 +87,11 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
         }
 
         .music-float-btn.off {
             border-color: #64748b;
             color: #64748b;
-            box-shadow: none;
         }
 
         .main-wrapper {
@@ -365,7 +362,7 @@
         <div class="currency-box cash-val" onclick="openScreen('screen-cashout')">
             <span>💵</span> <span id="cash-display">0.00 €</span>
         </div>
-        <button class="music-float-btn off" id="music-btn" onclick="toggleMusic()">🔇 Mute</button>
+        <button class="music-float-btn off" id="music-btn" onclick="toggleAudioFX()">🔊 Sonidos: OFF</button>
     </div>
 
     <div class="main-wrapper">
@@ -376,7 +373,7 @@
                 <h1>SISTEMA DE PREMIOS VIP</h1>
                 <p>Sube de nivel VIP haciendo tiradas o viendo anuncios para conseguir fondos.</p>
                 <div class="action-row-lobby">
-                    <button class="btn-mini" onclick="claimDailyBonus()">🎁 Bono Fichas</button>
+                    <button class="btn-mini" id="bonus-btn" onclick="claimDailyBonus()">🎁 Bono Fichas (+1k)</button>
                     <button class="btn-mini btn-ad" id="ad-btn" onclick="watchRewardedAd()">📺 Ver Anuncio (+1k)</button>
                     <button class="btn-mini" onclick="openScreen('screen-cashout')" style="background: var(--gold); color:#000;">💸 Canjear</button>
                 </div>
@@ -486,69 +483,68 @@
         let currentMachineKey = 'neon';
         let isSpinning = false;
         let globalJackpot = 124.50;
+        let bonusClaimed = false; // Control para que el bono diario solo se pueda usar una vez por sesión
         
-        // SINTETIZADOR DE MÚSICA WEB (AUDIO NATIVO JS)
+        // EFECTOS DE SONIDO LIMPIOS (CLICS Y MONEDAS)
         let audioCtx = null;
-        let musicInterval = null;
-        let musicPlaying = false;
+        let soundEnabled = false;
 
         const MACHINES = {
             neon: { title: "NEON 777", symbols: ["🍒", "🍋", "🔔", "💎", "7️⃣"], cashRate: 0.0001 },
             cash: { title: "CASH SLOTS PRO", symbols: ["💵", "💎", "🪙", "🏆", "💰"], cashRate: 0.0003 }
         };
 
-        function toggleMusic() {
+        function toggleAudioFX() {
             const btn = document.getElementById('music-btn');
-
             if (!audioCtx) {
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             }
 
-            if (musicPlaying) {
-                clearInterval(musicInterval);
-                musicPlaying = false;
-                btn.innerText = "🔇 Mute";
-                btn.classList.add('off');
-            } else {
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
-                }
-                musicPlaying = true;
-                btn.innerText = "🎵 Música";
+            soundEnabled = !soundEnabled;
+            if (soundEnabled) {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                btn.innerText = "🔊 Sonidos: ON";
                 btn.classList.remove('off');
-                startCyberLoop();
+                playCoinSound();
+            } else {
+                btn.innerText = "🔊 Sonidos: OFF";
+                btn.classList.add('off');
             }
         }
 
-        // Generador de notas musicales automáticas estilo Synthwave
-        function startCyberLoop() {
-            const notes = [220, 246.94, 277.18, 329.63, 369.99, 440]; // Escala armónica espacial
-            let step = 0;
+        // Sonido corto y agradable de monedas / acierto
+        function playCoinSound() {
+            if (!soundEnabled || !audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota D5
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.08); // Nota A5
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.25);
+            } catch(e) {}
+        }
 
-            musicInterval = setInterval(() => {
-                if (!musicPlaying) return;
-                
-                try {
-                    const osc = audioCtx.createOscillator();
-                    const gain = audioCtx.createGain();
-
-                    osc.type = 'sine'; // Sonido suave tipo sintetizador
-                    osc.frequency.setValueAtTime(notes[step % notes.length], audioCtx.currentTime);
-
-                    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-
-                    osc.connect(gain);
-                    gain.connect(audioCtx.destination);
-
-                    osc.start();
-                    osc.stop(audioCtx.currentTime + 0.8);
-
-                    step++;
-                } catch(e) {
-                    console.log("Audio loop error", e);
-                }
-            }, 600); // Toca una nota cada 0.6 segundos creando un ambiente continuo
+        // Sonido corto de clic para botones
+        function playClickSound() {
+            if (!soundEnabled || !audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch(e) {}
         }
 
         function getVipRules() {
@@ -574,12 +570,14 @@
 
         function openScreen(screenId) {
             if (isSpinning) return;
+            playClickSound();
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             updateUI();
         }
 
         function openMachine(key) {
+            playClickSound();
             currentMachineKey = key;
             const m = MACHINES[key];
             document.getElementById('machine-header-title').innerText = m.title;
@@ -589,17 +587,30 @@
 
         function changeBet(delta) {
             if (isSpinning) return;
+            playClickSound();
             currentBet = Math.max(50, Math.min(1000, currentBet + delta));
             updateUI();
         }
 
+        // Bono diario corregido (ya no se puede spamear)
         function claimDailyBonus() {
+            playClickSound();
+            if (bonusClaimed) {
+                alert("Ya has reclamado tu bono diario en esta sesión. ¡Vuelve mañana o mira un anuncio para conseguir más fichas!");
+                return;
+            }
             balance += 1000;
+            bonusClaimed = true;
+            const btn = document.getElementById('bonus-btn');
+            btn.style.opacity = "0.5";
+            btn.innerText = "🎁 Bono Reclamado";
             updateUI();
-            alert("¡Has recibido +1,000 fichas de bonificación diaria!");
+            playCoinSound();
+            alert("¡Has recibido +1,000 fichas de bonificación!");
         }
 
         function watchRewardedAd() {
+            playClickSound();
             const btn = document.getElementById('ad-btn');
             btn.innerText = "📺 Verificando...";
             btn.disabled = true;
@@ -610,6 +621,7 @@
                 totalSpins += 2;       
                 
                 updateUI();
+                playCoinSound();
                 alert("🎉 ¡Acción completada! Has ganado +1,000 Fichas y puntos de saldo.");
                 
                 btn.innerText = "📺 Ver Anuncio (+1k)";
@@ -624,6 +636,7 @@
                 return;
             }
 
+            playClickSound();
             isSpinning = true;
             balance -= currentBet;
             totalSpins++;
@@ -670,6 +683,7 @@
             if (res[0] === res[1] && res[1] === res[2]) {
                 const prize = currentBet * 10;
                 balance += prize;
+                playCoinSound();
                 winBanner.innerText = `🎉 ¡PREMIO GRANDE! +${prize} Fichas`;
                 winBanner.style.color = "var(--green)";
             } else {
@@ -680,6 +694,7 @@
         }
 
         function requestCashout() {
+            playClickSound();
             const email = document.getElementById('paypal-email').value;
             const rules = getVipRules();
 
