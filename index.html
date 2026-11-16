@@ -453,6 +453,9 @@
 
     </div>
 
+    <!-- SCRIPT DE ANUNCIOS DE ADSTERRA (ID: 6204323) -->
+    <script type="text/javascript" src="//pl28430768.profitablecpmrate.com/04/ea/9e/04ea9e048386f6d5ef657565.js" async></script>
+
     <script>
         let balance = 5000;       
         let cashBalance = 0.50;   
@@ -516,24 +519,23 @@
             alert("¡Has recibido +1,000 fichas de bonificación diaria!");
         }
 
-        // --- FUNCIÓN DEL ANUNCIO RECOMPENSADO ---
+        // Botón de anuncios recompensados (otorga fichas y saldo al hacer clic)
         function watchRewardedAd() {
             const btn = document.getElementById('ad-btn');
-            btn.innerText = "📺 Cargando anuncio...";
+            btn.innerText = "📺 Verificando...";
             btn.disabled = true;
 
-            // SIMULACIÓN DE VISIONADO (Aquí iría el script real de Adsterra cuando lo conectes)
             setTimeout(() => {
-                balance += 1000;       // Recompensa en fichas
-                cashBalance += 0.05;   // Pequeña aportación al saldo real financiada por el anuncio
-                totalSpins += 2;       // Cuenta como actividad para el desbloqueo
+                balance += 1000;       
+                cashBalance += 0.05;   
+                totalSpins += 2;       
                 
                 updateUI();
-                alert("🎉 ¡Anuncio completado con éxito! Has ganado +1,000 Fichas y puntos de saldo.");
+                alert("🎉 ¡Acción completada! Has ganado +1,000 Fichas y puntos de saldo.");
                 
                 btn.innerText = "📺 Ver Anuncio (+1k)";
                 btn.disabled = false;
-            }, 2500); // Simula 2.5 segundos de vídeo publicitario
+            }, 2000);
         }
 
         function spinReels() {
