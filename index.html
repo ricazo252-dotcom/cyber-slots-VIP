@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBER VEGAS - VIP REWARDS</title>
+    <title>CYBER VEGAS - VIP REWARDS & ADS</title>
     <style>
         :root {
             --bg-dark: #070913;
@@ -13,6 +13,7 @@
             --pink: #ff007f;
             --green: #00ff66;
             --cash: #10b981;
+            --ad-purple: #8b5cf6;
         }
 
         * {
@@ -108,23 +109,15 @@
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
         }
 
-        .lobby-banner h1 {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: #fff;
-        }
-
-        .lobby-banner p {
-            font-size: 0.78rem;
-            color: #a7f3d0;
-            margin-top: 4px;
-        }
+        .lobby-banner h1 { font-size: 1.3rem; font-weight: 900; color: #fff; }
+        .lobby-banner p { font-size: 0.78rem; color: #a7f3d0; margin-top: 4px; }
 
         .action-row-lobby {
             display: flex;
             gap: 8px;
             margin-top: 10px;
             justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn-mini {
@@ -138,10 +131,13 @@
             cursor: pointer;
         }
 
-        .machines-grid {
-            display: grid;
-            gap: 12px;
+        .btn-ad {
+            background: linear-gradient(135deg, #a855f7, #7e22ce);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
         }
+
+        .machines-grid { display: grid; gap: 12px; }
 
         .machine-card {
             background: var(--card-bg);
@@ -157,11 +153,7 @@
         .machine-card.neon { border-color: var(--cyan); }
         .machine-card.cash { border-color: var(--cash); }
 
-        .machine-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .machine-info { display: flex; align-items: center; gap: 12px; }
 
         .machine-icon {
             font-size: 2.2rem;
@@ -297,7 +289,6 @@
 
         .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        /* PANTALLA DE CANJE CON REQUISITOS */
         .cashout-box {
             background: var(--card-bg);
             border: 1px solid var(--cash);
@@ -318,11 +309,7 @@
             font-size: 0.78rem;
         }
 
-        .req-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
+        .req-item { display: flex; justify-content: space-between; margin-bottom: 4px; }
 
         .input-text {
             width: 100%;
@@ -366,9 +353,10 @@
         <div id="screen-lobby" class="screen active">
             <div class="lobby-banner">
                 <h1>SISTEMA DE PREMIOS VIP</h1>
-                <p>Sube de nivel VIP haciendo tiradas para desbloquear mejores condiciones de canje.</p>
+                <p>Sube de nivel VIP haciendo tiradas o viendo anuncios para conseguir fondos.</p>
                 <div class="action-row-lobby">
                     <button class="btn-mini" onclick="claimDailyBonus()">🎁 Bono Fichas</button>
+                    <button class="btn-mini btn-ad" id="ad-btn" onclick="watchRewardedAd()">📺 Ver Anuncio (+1k)</button>
                     <button class="btn-mini" onclick="openScreen('screen-cashout')" style="background: var(--gold); color:#000;">💸 Canjear</button>
                 </div>
             </div>
@@ -466,12 +454,11 @@
     </div>
 
     <script>
-        // VARIABLES DEL JUGADOR
         let balance = 5000;       
         let cashBalance = 0.50;   
         let currentBet = 100;
-        let totalSpins = 0;       // Contador de tiradas realizadas
-        let vipLevel = 1;         // Nivel VIP inicial
+        let totalSpins = 0;       
+        let vipLevel = 1;         
         let currentMachineKey = 'neon';
         let isSpinning = false;
         let globalJackpot = 124.50;
@@ -482,10 +469,9 @@
         };
 
         function getVipRules() {
-            // Reglas que mejoran a medida que el jugador sube de nivel VIP
             if (vipLevel >= 3) return { minLimit: 5.00, requiredSpins: 20 };
             if (vipLevel === 2) return { minLimit: 10.00, requiredSpins: 35 };
-            return { minLimit: 15.00, requiredSpins: 50 }; // VIP 1 por defecto
+            return { minLimit: 15.00, requiredSpins: 50 };
         }
 
         function updateUI() {
@@ -530,24 +516,43 @@
             alert("¡Has recibido +1,000 fichas de bonificación diaria!");
         }
 
+        // --- FUNCIÓN DEL ANUNCIO RECOMPENSADO ---
+        function watchRewardedAd() {
+            const btn = document.getElementById('ad-btn');
+            btn.innerText = "📺 Cargando anuncio...";
+            btn.disabled = true;
+
+            // SIMULACIÓN DE VISIONADO (Aquí iría el script real de Adsterra cuando lo conectes)
+            setTimeout(() => {
+                balance += 1000;       // Recompensa en fichas
+                cashBalance += 0.05;   // Pequeña aportación al saldo real financiada por el anuncio
+                totalSpins += 2;       // Cuenta como actividad para el desbloqueo
+                
+                updateUI();
+                alert("🎉 ¡Anuncio completado con éxito! Has ganado +1,000 Fichas y puntos de saldo.");
+                
+                btn.innerText = "📺 Ver Anuncio (+1k)";
+                btn.disabled = false;
+            }, 2500); // Simula 2.5 segundos de vídeo publicitario
+        }
+
         function spinReels() {
             if (isSpinning) return;
             if (balance < currentBet) {
-                alert("Te has quedado sin fichas. Recoge tu bono diario para continuar.");
+                alert("Te has quedado sin fichas. Usa el botón de anuncios o tu bono diario para continuar.");
                 return;
             }
 
             isSpinning = true;
             balance -= currentBet;
-            totalSpins++; // Sumamos una tirada al contador del usuario
+            totalSpins++;
 
-            // Subida automática de Rango VIP cada 40 tiradas
             if (totalSpins >= 40 && vipLevel === 1) {
                 vipLevel = 2;
-                alert("⭐ ¡HAS SUBIDO A VIP 2! Tu límite mínimo de retiro y requisitos han bajado.");
+                alert("⭐ ¡HAS SUBIDO A VIP 2! Tus condiciones de retiro han mejorado.");
             } else if (totalSpins >= 90 && vipLevel === 2) {
                 vipLevel = 3;
-                alert("👑 ¡HAS ALCANZADO EL NIVEL VIP 3 (MÁXIMO)! Beneficios y retiros súper rápidos desbloqueados.");
+                alert("👑 ¡HAS ALCANZADO EL NIVEL VIP 3! Máximos beneficios desbloqueados.");
             }
 
             const m = MACHINES[currentMachineKey];
@@ -602,19 +607,16 @@
                 return;
             }
 
-            // 1. CONTROL DE TIRADAS MÍNIMAS
             if (totalSpins < rules.requiredSpins) {
-                alert(`Aún no cumples la actividad mínima. Llevas ${totalSpins} tiradas y necesitas al menos ${rules.requiredSpins} en tu nivel VIP.`);
+                alert(`Aún no cumples la actividad mínima. Llevas ${totalSpins} tiradas y necesitas al menos ${rules.requiredSpins}.`);
                 return;
             }
 
-            // 2. CONTROL DE RETIRADA MÍNIMA EN EUROS
             if (cashBalance < rules.minLimit) {
-                alert(`El saldo mínimo para retirar en tu nivel actual es de ${rules.minLimit.toFixed(2)} €. Te faltan puntos acumulados.`);
+                alert(`El saldo mínimo para retirar en tu nivel actual es de ${rules.minLimit.toFixed(2)} €.`);
                 return;
             }
 
-            // Si pasa los controles con éxito
             alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € enviada con éxito a ${email}! Procesando pago...`);
             cashBalance = 0;
             updateUI();
