@@ -967,4 +967,118 @@
 
             isPlaying = true;
             playerHand = [getRandomCard(), getRandomCard()];
-            dealerHand = [getRandomCard(),
+            dealerHand = [getRandomCard(), getRandomCard()];
+
+            updateBJView(false);
+
+            if (calcScore(playerHand) === 21) {
+                endBlackjack("¡BLACKJACK NATURAL! ¡Has ganado!");
+                balance += Math.floor(currentBet * 2.5);
+                playCoinSound();
+                return;
+            }
+
+            document.getElementById('bj-actions').innerHTML = `
+                <button class="spin-btn" onclick="hitCard()" style="background: var(--cyan); color:#000;">PEDIR CARTA</button>
+                <button class="spin-btn" onclick="standCards()" style="background: var(--cash); color:#022c22;">PLANTARSE</button>
+            `;
+            document.getElementById('bj-message').innerText = "¿Pedir carta o plantarse?";
+        }
+
+        function getRandomCard() {
+            const vals = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+            return vals[Math.floor(Math.random() * vals.length)];
+        }
+
+        function calcScore(hand) {
+            let score = 0;
+            let aces = 0;
+            hand.forEach(c => {
+                if (['J','Q','K'].includes(c)) score += 10;
+                else if (c === 'A') { aces++; score += 11; }
+                else score += parseInt(c);
+            });
+            while (score > 21 && aces > 0) { score -= 10; aces--; }
+            return score;
+        }
+
+        function updateBJView(showDealer) {
+            document.getElementById('player-cards').innerHTML = playerHand.map(c => `<div class="card-item">${c}</div>`).join('');
+            document.getElementById('player-score').innerText = calcScore(playerHand);
+
+            if (showDealer) {
+                document.getElementById('dealer-cards').innerHTML = dealerHand.map(c => `<div class="card-item">${c}</div>`).join('');
+                document.getElementById('dealer-score').innerText = calcScore(dealerHand);
+            } else {
+                document.getElementById('dealer-cards').innerHTML = `<div class="card-item">${dealerHand[0]}</div><div class="card-item">🂠</div>`;
+                document.getElementById('dealer-score').innerText = "?";
+            }
+        }
+
+        function hitCard() {
+            playClickSound();
+            playerHand.push(getRandomCard());
+            updateBJView(false);
+            if (calcScore(playerHand) > 21) {
+                endBlackjack("💥 Te has pasado de 21. ¡Gana la banca!");
+            }
+        }
+
+        function standCards() {
+            playClickSound();
+            let dScore = calcScore(dealerHand);
+            while (dScore < 17) {
+                dealerHand.push(getRandomCard());
+                dScore = calcScore(dealerHand);
+            }
+            updateBJView(true);
+
+            let pScore = calcScore(playerHand);
+            if (dScore > 21 || pScore > dScore) {
+                const prize = currentBet * 2;
+                balance += prize;
+                playCoinSound();
+                endBlackjack(`🎉 ¡Has vencido a la banca! (+${prize} Fichas)`);
+            } else if (pScore === dScore) {
+                balance += currentBet;
+                endBlackjack("🤝 ¡Empate! Se devuelve la apuesta.");
+            } else {
+                endBlackjack("❌ La banca tiene mejor puntuación. Gana la casa.");
+            }
+        }
+
+        function endBlackjack(msg) {
+            isPlaying = false;
+            document.getElementById('bj-message').innerText = msg;
+            document.getElementById('bj-actions').innerHTML = '<button class="spin-btn" onclick="resetBlackjackUI()" style="grid-column: span 2; background: var(--pink);">🔄 NUEVA PARTIDA</button>';
+            updateUI();
+        }
+
+        function requestCashout() {
+            playClickSound();
+            const email = document.getElementById('paypal-email').value;
+            const rules = getVipRules();
+
+            if (!email || !email.includes('@')) {
+                alert("Introduce un correo electrónico válido.");
+                return;
+            }
+            if (totalSpins < rules.requiredSpins) {
+                alert(`Actividad insuficiente. Llevas ${totalSpins} partidas y necesitas ${rules.requiredSpins}.`);
+                return;
+            }
+            if (cashBalance < rules.minLimit) {
+                alert(`El mínimo de retiro para tu nivel es ${rules.minLimit.toFixed(2)} €.`);
+                return;
+            }
+
+            alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € enviada a ${email}!`);
+            cashBalance = 0;
+            updateUI();
+            openScreen('screen-lobby');
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
