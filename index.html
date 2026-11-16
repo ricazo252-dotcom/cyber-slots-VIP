@@ -389,10 +389,10 @@
 
     <!-- BARRA SUPERIOR -->
     <div class="top-hud">
-        <div class="currency-box coin-val" onclick="openScreen('screen-lobby')">
+        <div class="currency-box coin-val" onclick="goLobby()">
             <span>🪙</span> <span id="balance-display">5,000</span>
         </div>
-        <div class="currency-box cash-val" onclick="openScreen('screen-cashout')">
+        <div class="currency-box cash-val" onclick="goCashout()">
             <span>💵</span> <span id="cash-display">0.00 €</span>
         </div>
         <button class="music-float-btn off" id="music-btn" onclick="toggleAudioFX()">🔊 Sonidos: OFF</button>
@@ -408,12 +408,12 @@
                 <div class="action-row-lobby">
                     <button class="btn-mini" id="bonus-btn" onclick="claimDailyBonus()">🎁 Bono Fichas</button>
                     <button class="btn-mini btn-ad" id="ad-btn" onclick="watchRewardedAd()">📺 Ver Anuncio (+1k)</button>
-                    <button class="btn-mini" onclick="openScreen('screen-cashout')" style="background: var(--gold); color:#000;">💸 Canjear</button>
+                    <button class="btn-mini" onclick="goCashout()" style="background: var(--gold); color:#000;">💸 Canjear</button>
                 </div>
             </div>
 
             <div class="machines-grid">
-                <div class="machine-card neon" onclick="openMachine('neon')">
+                <div class="machine-card neon" onclick="openNeonSlot()">
                     <div class="machine-info">
                         <div class="machine-icon">💎</div>
                         <div>
@@ -424,7 +424,7 @@
                     <div class="play-pill">JUGAR</div>
                 </div>
 
-                <div class="machine-card cash" onclick="openMachine('cash')">
+                <div class="machine-card cash" onclick="openCashSlot()">
                     <div class="machine-info">
                         <div class="machine-icon">💵</div>
                         <div>
@@ -435,7 +435,7 @@
                     <div class="play-pill" style="background:var(--cash); color:#fff;">PRO</div>
                 </div>
 
-                <div class="machine-card crash" onclick="openMachine('crash')">
+                <div class="machine-card crash" onclick="openCrashGameScreen()">
                     <div class="machine-info">
                         <div class="machine-icon">🚀</div>
                         <div>
@@ -446,7 +446,7 @@
                     <div class="play-pill" style="background:var(--purple); color:#fff;">NUEVO</div>
                 </div>
 
-                <div class="machine-card roulette" onclick="openMachine('roulette')">
+                <div class="machine-card roulette" onclick="openRouletteScreen()">
                     <div class="machine-info">
                         <div class="machine-icon">🎡</div>
                         <div>
@@ -457,7 +457,7 @@
                     <div class="play-pill" style="background:var(--gold); color:#000;">HOT</div>
                 </div>
 
-                <div class="machine-card blackjack" onclick="openMachine('blackjack')">
+                <div class="machine-card blackjack" onclick="openBlackjackScreen()">
                     <div class="machine-info">
                         <div class="machine-icon">🃏</div>
                         <div>
@@ -473,7 +473,7 @@
         <!-- TRAGAPERRAS -->
         <div id="screen-slot" class="screen">
             <div class="slot-header">
-                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <button class="back-btn" onclick="goLobby()">← SALAS</button>
                 <strong id="machine-header-title" style="color: var(--gold);">NEON 777</strong>
             </div>
 
@@ -507,7 +507,7 @@
         <!-- CRIPTO CRASH -->
         <div id="screen-crash" class="screen">
             <div class="slot-header">
-                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <button class="back-btn" onclick="goLobby()">← SALAS</button>
                 <strong style="color: var(--purple);">🚀 CRIPTO CRASH</strong>
             </div>
 
@@ -528,14 +528,14 @@
                     </div>
                     <button class="bet-btn" onclick="changeBet(50)">+</button>
                 </div>
-                <button class="spin-btn" id="crash-action-btn" onclick="startCrashGame()" style="background: linear-gradient(180deg, #a855f7, #6b21a8);">🚀 DESPEGAR COHETE</button>
+                <button class="spin-btn" id="crash-action-btn" onclick="triggerCrashAction()" style="background: linear-gradient(180deg, #a855f7, #6b21a8);">🚀 DESPEGAR COHETE</button>
             </div>
         </div>
 
         <!-- RULETA -->
         <div id="screen-roulette" class="screen">
             <div class="slot-header">
-                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <button class="back-btn" onclick="goLobby()">← SALAS</button>
                 <strong style="color: var(--gold);">🎡 RULETA DE LA FORTUNA</strong>
             </div>
 
@@ -562,7 +562,7 @@
         <!-- BLACKJACK -->
         <div id="screen-blackjack" class="screen">
             <div class="slot-header">
-                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <button class="back-btn" onclick="goLobby()">← SALAS</button>
                 <strong style="color: var(--pink);">🃏 BLACKJACK 21 PRO</strong>
             </div>
 
@@ -600,7 +600,7 @@
         <!-- CANJE VIP -->
         <div id="screen-cashout" class="screen">
             <div class="slot-header">
-                <button class="back-btn" onclick="openScreen('screen-lobby')">← VOLVER</button>
+                <button class="back-btn" onclick="goLobby()">← VOLVER</button>
                 <strong style="color: var(--cash);">CANJE DE PREMIOS VIP</strong>
             </div>
 
@@ -709,30 +709,43 @@
             document.getElementById('req-spins-count').innerText = `${totalSpins} / ${rules.requiredSpins} mín.`;
         }
 
-        function openScreen(screenId) {
+        function showScreen(screenId) {
             playClickSound();
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             updateUI();
         }
 
-        function openMachine(key) {
-            playClickSound();
-            if (key === 'neon' || key === 'cash') {
-                currentMachineKey = key;
-                const m = MACHINES[key];
-                document.getElementById('machine-header-title').innerText = m.title;
-                document.getElementById('win-message').innerText = "¡PULSA GIRAR!";
-                openScreen('screen-slot');
-            } else if (key === 'crash') {
-                resetCrashUI();
-                openScreen('screen-crash');
-            } else if (key === 'roulette') {
-                openScreen('screen-roulette');
-            } else if (key === 'blackjack') {
-                resetBlackjackUI();
-                openScreen('screen-blackjack');
-            }
+        function goLobby() { showScreen('screen-lobby'); }
+        function goCashout() { showScreen('screen-cashout'); }
+
+        // Apertura directa y específica para cada sala
+        function openNeonSlot() {
+            currentMachineKey = 'neon';
+            document.getElementById('machine-header-title').innerText = "NEON 777";
+            document.getElementById('win-message').innerText = "¡PULSA GIRAR!";
+            showScreen('screen-slot');
+        }
+
+        function openCashSlot() {
+            currentMachineKey = 'cash';
+            document.getElementById('machine-header-title').innerText = "CASH SLOTS PRO";
+            document.getElementById('win-message').innerText = "¡PULSA GIRAR!";
+            showScreen('screen-slot');
+        }
+
+        function openCrashGameScreen() {
+            resetCrashUI();
+            showScreen('screen-crash');
+        }
+
+        function openRouletteScreen() {
+            showScreen('screen-roulette');
+        }
+
+        function openBlackjackScreen() {
+            resetBlackjackUI();
+            showScreen('screen-blackjack');
         }
 
         function changeBet(delta) {
@@ -839,15 +852,24 @@
         let crashInterval = null;
         let currentMultiplier = 1.00;
         let crashPoint = 1.00;
+        let crashState = 'ready'; // 'ready', 'running'
 
         function resetCrashUI() {
             isPlaying = false;
+            crashState = 'ready';
             currentMultiplier = 1.00;
             document.getElementById('crash-mult').innerText = "1.00x";
             document.getElementById('crash-status').innerText = "Pulsa despegar para comenzar";
             const btn = document.getElementById('crash-action-btn');
             btn.innerText = "🚀 DESPEGAR COHETE";
-            btn.onclick = startCrashGame;
+        }
+
+        function triggerCrashAction() {
+            if (crashState === 'ready') {
+                startCrashGame();
+            } else if (crashState === 'running') {
+                cashoutCrash();
+            }
         }
 
         function startCrashGame() {
@@ -860,13 +882,12 @@
             checkVipProgress();
             updateUI();
 
-            isPlaying = true;
+            crashState = 'running';
             currentMultiplier = 1.00;
             crashPoint = (Math.random() * 2.5 + 1.2).toFixed(2);
 
             const btn = document.getElementById('crash-action-btn');
             btn.innerText = "💰 RETIRAR GANANCIA";
-            btn.onclick = cashoutCrash;
             document.getElementById('crash-status').innerText = "El cohete está subiendo...";
 
             crashInterval = setInterval(() => {
@@ -875,27 +896,25 @@
 
                 if (currentMultiplier >= parseFloat(crashPoint)) {
                     clearInterval(crashInterval);
-                    isPlaying = false;
+                    crashState = 'ready';
                     document.getElementById('crash-mult').innerText = "💥 CRASH (" + crashPoint + "x)";
                     document.getElementById('crash-status').innerText = "¡Te has estrellado! Perdiste la apuesta.";
                     btn.innerText = "🚀 REINTENTAR";
-                    btn.onclick = startCrashGame;
                     updateUI();
                 }
             }, 100);
         }
 
         function cashoutCrash() {
-            if (!isPlaying) return;
+            if (crashState !== 'running') return;
             clearInterval(crashInterval);
-            isPlaying = false;
+            crashState = 'ready';
             const winnings = Math.floor(currentBet * currentMultiplier);
             balance += winnings;
             playCoinSound();
             document.getElementById('crash-status').innerText = `🎉 ¡Retirado con éxito! +${winnings} Fichas`;
             const btn = document.getElementById('crash-action-btn');
             btn.innerText = "🚀 JUGAR OTRA VEZ";
-            btn.onclick = startCrashGame;
             updateUI();
         }
 
@@ -1075,7 +1094,7 @@
             alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € enviada a ${email}!`);
             cashBalance = 0;
             updateUI();
-            openScreen('screen-lobby');
+            goLobby();
         }
 
         updateUI();
