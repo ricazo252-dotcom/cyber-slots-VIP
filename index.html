@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBER VEGAS - VIP CASINO</title>
+    <title>CYBER VEGAS - MULTIGAME VIP</title>
     <style>
         :root {
             --bg-dark: #070913;
@@ -13,6 +13,7 @@
             --pink: #ff007f;
             --green: #00ff66;
             --cash: #10b981;
+            --purple: #a855f7;
         }
 
         * {
@@ -84,15 +85,9 @@
             font-weight: 900;
             font-size: 0.75rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
 
-        .music-float-btn.off {
-            border-color: #64748b;
-            color: #64748b;
-        }
+        .music-float-btn.off { border-color: #64748b; color: #64748b; }
 
         .main-wrapper {
             width: 100%;
@@ -108,9 +103,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .screen.active {
-            display: block;
-        }
+        .screen.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
@@ -155,13 +148,13 @@
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
         }
 
-        .machines-grid { display: grid; gap: 12px; }
+        .machines-grid { display: grid; gap: 10px; margin-bottom: 20px; }
 
         .machine-card {
             background: var(--card-bg);
             border: 2px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            padding: 14px;
+            border-radius: 14px;
+            padding: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -170,30 +163,33 @@
 
         .machine-card.neon { border-color: var(--cyan); }
         .machine-card.cash { border-color: var(--cash); }
+        .machine-card.crash { border-color: var(--purple); }
+        .machine-card.roulette { border-color: var(--gold); }
+        .machine-card.blackjack { border-color: var(--pink); }
 
-        .machine-info { display: flex; align-items: center; gap: 12px; }
+        .machine-info { display: flex; align-items: center; gap: 10px; }
 
         .machine-icon {
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             background: rgba(0,0,0,0.4);
-            width: 52px;
-            height: 52px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 10px;
         }
 
-        .machine-title { font-size: 1.05rem; font-weight: 900; }
-        .machine-sub { font-size: 0.75rem; color: #94a3b8; }
+        .machine-title { font-size: 0.95rem; font-weight: 900; }
+        .machine-sub { font-size: 0.7rem; color: #94a3b8; }
 
         .play-pill {
             background: var(--gold);
             color: #000;
             font-weight: 900;
-            padding: 7px 14px;
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .slot-header {
@@ -232,6 +228,7 @@
             border-radius: 18px;
             padding: 14px 10px;
             margin-bottom: 14px;
+            text-align: center;
         }
 
         .reels-container {
@@ -296,9 +293,9 @@
             background: linear-gradient(180deg, #10b981 0%, #047857 100%);
             color: #fff;
             border: none;
-            padding: 16px;
+            padding: 14px;
             border-radius: 14px;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 900;
             cursor: pointer;
             text-transform: uppercase;
@@ -306,6 +303,45 @@
         }
 
         .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* ESTILOS ESPECÍFICOS PARA LOS NUEVOS JUEGOS */
+        .game-display-box {
+            background: #04060e;
+            border: 2px dashed rgba(255,255,255,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .crash-multiplier { font-size: 2.5rem; font-weight: 900; color: var(--purple); text-shadow: 0 0 15px rgba(168,85,247,0.5); }
+        .roulette-wheel { font-size: 3rem; margin-bottom: 5px; animation: spinIcon 2s infinite linear paused; }
+        .roulette-wheel.spinning { animation-play-state: running; }
+
+        @keyframes spinIcon {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cards-row { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
+        .card-item {
+            background: #fff;
+            color: #000;
+            width: 45px;
+            height: 65px;
+            border-radius: 6px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
 
         .cashout-box {
             background: var(--card-bg);
@@ -328,7 +364,6 @@
         }
 
         .req-item { display: flex; justify-content: space-between; margin-bottom: 4px; }
-
         .input-text {
             width: 100%;
             background: #020409;
@@ -339,7 +374,6 @@
             margin-bottom: 10px;
             font-size: 0.85rem;
         }
-
         .btn-full {
             width: 100%;
             background: var(--cash);
@@ -371,26 +405,28 @@
         <div id="screen-lobby" class="screen active">
             <div class="lobby-banner">
                 <h1>SISTEMA DE PREMIOS VIP</h1>
-                <p>Sube de nivel VIP haciendo tiradas o viendo anuncios para conseguir fondos.</p>
+                <p>Elige sala, sube de nivel VIP y consigue fondos reales.</p>
                 <div class="action-row-lobby">
-                    <button class="btn-mini" id="bonus-btn" onclick="claimDailyBonus()">🎁 Bono Fichas (+1k)</button>
+                    <button class="btn-mini" id="bonus-btn" onclick="claimDailyBonus()">🎁 Bono Fichas</button>
                     <button class="btn-mini btn-ad" id="ad-btn" onclick="watchRewardedAd()">📺 Ver Anuncio (+1k)</button>
                     <button class="btn-mini" onclick="openScreen('screen-cashout')" style="background: var(--gold); color:#000;">💸 Canjear</button>
                 </div>
             </div>
 
             <div class="machines-grid">
+                <!-- Sala 1: Neon 777 -->
                 <div class="machine-card neon" onclick="openMachine('neon')">
                     <div class="machine-info">
                         <div class="machine-icon">💎</div>
                         <div>
                             <div class="machine-title" style="color: var(--cyan);">NEON 777</div>
-                            <div class="machine-sub">Suma puntos de experiencia VIP</div>
+                            <div class="machine-sub">Tragaperras clásica luminosa</div>
                         </div>
                     </div>
                     <div class="play-pill">JUGAR</div>
                 </div>
 
+                <!-- Sala 2: Cash Slots Pro -->
                 <div class="machine-card cash" onclick="openMachine('cash')">
                     <div class="machine-info">
                         <div class="machine-icon">💵</div>
@@ -401,10 +437,46 @@
                     </div>
                     <div class="play-pill" style="background:var(--cash); color:#fff;">PRO</div>
                 </div>
+
+                <!-- Sala 3: Cripto Crash -->
+                <div class="machine-card crash" onclick="openMachine('crash')">
+                    <div class="machine-info">
+                        <div class="machine-icon">🚀</div>
+                        <div>
+                            <div class="machine-title" style="color: var(--purple);">CRIPTO CRASH</div>
+                            <div class="machine-sub">Retira antes de que el cohete explote</div>
+                        </div>
+                    </div>
+                    <div class="play-pill" style="background:var(--purple); color:#fff;">NUEVO</div>
+                </div>
+
+                <!-- Sala 4: Ruleta de la Fortuna -->
+                <div class="machine-card roulette" onclick="openMachine('roulette')">
+                    <div class="machine-info">
+                        <div class="machine-icon">🎡</div>
+                        <div>
+                            <div class="machine-title" style="color: var(--gold);">RULETA FORTUNA</div>
+                            <div class="machine-sub">Gira y multiplica x2, x3 o x5</div>
+                        </div>
+                    </div>
+                    <div class="play-pill" style="background:var(--gold); color:#000;">HOT</div>
+                </div>
+
+                <!-- Sala 5: Blackjack 21 -->
+                <div class="machine-card blackjack" onclick="openMachine('blackjack')">
+                    <div class="machine-info">
+                        <div class="machine-icon">🃏</div>
+                        <div>
+                            <div class="machine-title" style="color: var(--pink);">BLACKJACK 21</div>
+                            <div class="machine-sub">Vence a la banca sumando 21</div>
+                        </div>
+                    </div>
+                    <div class="play-pill" style="background:var(--pink); color:#fff;">PRO</div>
+                </div>
             </div>
         </div>
 
-        <!-- MÁQUINA DE TRAGAPERRAS -->
+        <!-- PANTALLA DE JUEGO: TRAGAPERRAS (Neon / Cash) -->
         <div id="screen-slot" class="screen">
             <div class="slot-header">
                 <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
@@ -438,7 +510,100 @@
             </div>
         </div>
 
-        <!-- PANTALLA DE CANJE CON REQUISITOS Y VIP -->
+        <!-- PANTALLA DE JUEGO: CRIPTO CRASH -->
+        <div id="screen-crash" class="screen">
+            <div class="slot-header">
+                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <strong style="color: var(--purple);">🚀 CRIPTO CRASH</strong>
+            </div>
+
+            <div class="slot-machine-frame">
+                <div class="game-display-box">
+                    <div style="font-size:0.75rem; color:#94a3b8; margin-bottom:5px;">MULTIPLICADOR ACTUAL</div>
+                    <div class="crash-multiplier" id="crash-mult">1.00x</div>
+                    <div id="crash-status" style="font-size:0.8rem; margin-top:8px; color:#a7f3d0;">Pulsa despegar para comenzar</div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="bet-selector">
+                    <button class="bet-btn" onclick="changeBet(-50)">-</button>
+                    <div class="bet-info">
+                        <span>APUESTA</span>
+                        <strong id="crash-bet-amount">100 🪙</strong>
+                    </div>
+                    <button class="bet-btn" onclick="changeBet(50)">+</button>
+                </div>
+                <button class="spin-btn" id="crash-action-btn" onclick="startCrashGame()" style="background: linear-gradient(180deg, #a855f7, #6b21a8);">🚀 DESPEGAR COHETE</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE JUEGO: RULETA DE LA FORTUNA -->
+        <div id="screen-roulette" class="screen">
+            <div class="slot-header">
+                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <strong style="color: var(--gold);">🎡 RULETA DE LA FORTUNA</strong>
+            </div>
+
+            <div class="slot-machine-frame">
+                <div class="game-display-box">
+                    <div class="roulette-wheel" id="roulette-icon">🎡</div>
+                    <div id="roulette-result" style="font-size:1.1rem; font-weight:900; color:var(--gold); margin-top:5px;">¡Gira para ganar!</div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="bet-selector">
+                    <button class="bet-btn" onclick="changeBet(-50)">-</button>
+                    <div class="bet-info">
+                        <span>APUESTA</span>
+                        <strong id="roulette-bet-amount">100 🪙</strong>
+                    </div>
+                    <button class="bet-btn" onclick="changeBet(50)">+</button>
+                </div>
+                <button class="spin-btn" id="roulette-spin-btn" onclick="spinRoulette()" style="background: linear-gradient(180deg, #ffd700, #ca8a04); color:#000;"> GIRAR RULETA</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE JUEGO: BLACKJACK 21 -->
+        <div id="screen-blackjack" class="screen">
+            <div class="slot-header">
+                <button class="back-btn" onclick="openScreen('screen-lobby')">← SALAS</button>
+                <strong style="color: var(--pink);">🃏 BLACKJACK 21 PRO</strong>
+            </div>
+
+            <div class="slot-machine-frame">
+                <div class="game-display-box" style="align-items: flex-start; padding: 14px;">
+                    <div style="font-size:0.75rem; color:#94a3b8;">MANO DE LA BANCA (<span id="dealer-score">?</span>)</div>
+                    <div class="cards-row" id="dealer-cards">
+                        <div class="card-item">🂠</div>
+                        <div class="card-item">?</div>
+                    </div>
+                    <div style="font-size:0.75rem; color:#94a3b8; margin-top:10px;">TU MANO (<span id="player-score">0</span>)</div>
+                    <div class="cards-row" id="player-cards">
+                        <div class="card-item">-</div>
+                        <div class="card-item">-</div>
+                    </div>
+                    <div id="bj-message" style="width:100%; text-align:center; font-size:0.85rem; color:var(--green); margin-top:8px; font-weight:900;">¡Haz tu apuesta y reparte!</div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="bet-selector" id="bj-bet-box">
+                    <button class="bet-btn" onclick="changeBet(-50)">-</button>
+                    <div class="bet-info">
+                        <span>APUESTA</span>
+                        <strong id="bj-bet-amount">100 🪙</strong>
+                    </div>
+                    <button class="bet-btn" onclick="changeBet(50)">+</button>
+                </div>
+                <div id="bj-actions" style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                    <button class="spin-btn" id="bj-deal-btn" onclick="startBlackjack()" style="grid-column: span 2; background: var(--pink);">🂡 REPARTIR CARTAS</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PANTALLA DE CANJE VIP -->
         <div id="screen-cashout" class="screen">
             <div class="slot-header">
                 <button class="back-btn" onclick="openScreen('screen-lobby')">← VOLVER</button>
@@ -447,21 +612,12 @@
 
             <div class="cashout-box">
                 <h3>Saldo Acumulado: <span id="cashout-balance-view">0.00 €</span></h3>
-                <p>Verifica que cumples con los requisitos de tu rango VIP actual antes de solicitar el pago.</p>
+                <p>Verifica que cumples con los requisitos de actividad de tu rango VIP antes de solicitar el pago.</p>
 
                 <div class="requirement-box">
-                    <div class="req-item">
-                        <span>Tu Rango Actual:</span>
-                        <strong id="req-vip-label" style="color: var(--gold);">VIP 1</strong>
-                    </div>
-                    <div class="req-item">
-                        <span>Límite Mínimo de Retiro:</span>
-                        <strong id="req-min-limit" style="color: var(--cash);">15.00 €</strong>
-                    </div>
-                    <div class="req-item">
-                        <span>Tiradas Realizadas:</span>
-                        <strong id="req-spins-count">0 / 50 mín.</strong>
-                    </div>
+                    <div class="req-item"><span>Tu Rango:</span><strong id="req-vip-label" style="color: var(--gold);">VIP 1</strong></div>
+                    <div class="req-item"><span>Mínimo Retiro:</span><strong id="req-min-limit" style="color: var(--cash);">15.00 €</strong></div>
+                    <div class="req-item"><span>Tiradas/Juegos:</span><strong id="req-spins-count">0 / 50 mín.</strong></div>
                 </div>
 
                 <input type="text" class="input-text" id="paypal-email" placeholder="Correo electrónico de tu PayPal / Bizum">
@@ -471,7 +627,7 @@
 
     </div>
 
-    <!-- SCRIPT DE ANUNCIOS DE ADSTERRA (ID: 6204323) -->
+    <!-- SCRIPT DE ADSTERRA (ID: 6204323) -->
     <script type="text/javascript" src="//pl28430768.profitablecpmrate.com/04/ea/9e/04ea9e048386f6d5ef657565.js" async></script>
 
     <script>
@@ -481,11 +637,10 @@
         let totalSpins = 0;       
         let vipLevel = 1;         
         let currentMachineKey = 'neon';
-        let isSpinning = false;
+        let isPlaying = false;
         let globalJackpot = 124.50;
-        let bonusClaimed = false; // Control para que el bono diario solo se pueda usar una vez por sesión
+        let bonusClaimed = false; 
         
-        // EFECTOS DE SONIDO LIMPIOS (CLICS Y MONEDAS)
         let audioCtx = null;
         let soundEnabled = false;
 
@@ -496,10 +651,7 @@
 
         function toggleAudioFX() {
             const btn = document.getElementById('music-btn');
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             soundEnabled = !soundEnabled;
             if (soundEnabled) {
                 if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -512,25 +664,21 @@
             }
         }
 
-        // Sonido corto y agradable de monedas / acierto
         function playCoinSound() {
             if (!soundEnabled || !audioCtx) return;
             try {
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // Nota D5
-                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.08); // Nota A5
+                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); 
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.08); 
                 gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.25);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.25);
             } catch(e) {}
         }
 
-        // Sonido corto de clic para botones
         function playClickSound() {
             if (!soundEnabled || !audioCtx) return;
             try {
@@ -540,10 +688,8 @@
                 osc.frequency.setValueAtTime(400, audioCtx.currentTime);
                 gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.05);
+                osc.connect(gain); gain.connect(audioCtx.destination);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.05);
             } catch(e) {}
         }
 
@@ -555,21 +701,22 @@
 
         function updateUI() {
             const rules = getVipRules();
-
             document.getElementById('balance-display').innerText = balance.toLocaleString();
             document.getElementById('cash-display').innerText = cashBalance.toFixed(2) + " €";
             document.getElementById('cashout-balance-view').innerText = cashBalance.toFixed(2) + " €";
             document.getElementById('bet-amount').innerText = `${currentBet} 🪙`;
+            document.getElementById('crash-bet-amount').innerText = `${currentBet} 🪙`;
+            document.getElementById('roulette-bet-amount').innerText = `${currentBet} 🪙`;
+            document.getElementById('bj-bet-amount').innerText = `${currentBet} 🪙`;
             document.getElementById('global-jackpot').innerText = globalJackpot.toFixed(2) + " €";
             document.getElementById('vip-badge-text').innerText = `VIP ${vipLevel}`;
-            
             document.getElementById('req-vip-label').innerText = `VIP ${vipLevel}`;
             document.getElementById('req-min-limit').innerText = rules.minLimit.toFixed(2) + " €";
             document.getElementById('req-spins-count').innerText = `${totalSpins} / ${rules.requiredSpins} mín.`;
         }
 
         function openScreen(screenId) {
-            if (isSpinning) return;
+            if (isPlaying) return;
             playClickSound();
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -578,35 +725,44 @@
 
         function openMachine(key) {
             playClickSound();
-            currentMachineKey = key;
-            const m = MACHINES[key];
-            document.getElementById('machine-header-title').innerText = m.title;
-            document.getElementById('win-message').innerText = "¡LISTO PARA JUGAR!";
-            openScreen('screen-slot');
+            if (key === 'neon' || key === 'cash') {
+                currentMachineKey = key;
+                const m = MACHINES[key];
+                document.getElementById('machine-header-title').innerText = m.title;
+                document.getElementById('win-message').innerText = "¡PULSA GIRAR!";
+                openScreen('screen-slot');
+            } else if (key === 'crash') {
+                resetCrashUI();
+                openScreen('screen-crash');
+            } else if (key === 'roulette') {
+                openScreen('screen-roulette');
+            } else if (key === 'blackjack') {
+                resetBlackjackUI();
+                openScreen('screen-blackjack');
+            }
         }
 
         function changeBet(delta) {
-            if (isSpinning) return;
+            if (isPlaying) return;
             playClickSound();
             currentBet = Math.max(50, Math.min(1000, currentBet + delta));
             updateUI();
         }
 
-        // Bono diario corregido (ya no se puede spamear)
         function claimDailyBonus() {
             playClickSound();
             if (bonusClaimed) {
-                alert("Ya has reclamado tu bono diario en esta sesión. ¡Vuelve mañana o mira un anuncio para conseguir más fichas!");
+                alert("Ya has reclamado tu bono diario. ¡Mira un anuncio para más fichas!");
                 return;
             }
             balance += 1000;
             bonusClaimed = true;
             const btn = document.getElementById('bonus-btn');
             btn.style.opacity = "0.5";
-            btn.innerText = "🎁 Bono Reclamado";
+            btn.innerText = "🎁 Reclamado";
             updateUI();
             playCoinSound();
-            alert("¡Has recibido +1,000 fichas de bonificación!");
+            alert("¡Has recibido +1,000 fichas de bono!");
         }
 
         function watchRewardedAd() {
@@ -614,49 +770,47 @@
             const btn = document.getElementById('ad-btn');
             btn.innerText = "📺 Verificando...";
             btn.disabled = true;
-
             setTimeout(() => {
                 balance += 1000;       
                 cashBalance += 0.05;   
                 totalSpins += 2;       
-                
                 updateUI();
                 playCoinSound();
-                alert("🎉 ¡Acción completada! Has ganado +1,000 Fichas y puntos de saldo.");
-                
+                alert("🎉 ¡Anuncio completado! +1,000 Fichas acreditadas.");
                 btn.innerText = "📺 Ver Anuncio (+1k)";
                 btn.disabled = false;
             }, 2000);
         }
 
-        function spinReels() {
-            if (isSpinning) return;
-            if (balance < currentBet) {
-                alert("Te has quedado sin fichas. Usa el botón de anuncios o tu bono diario para continuar.");
-                return;
-            }
-
-            playClickSound();
-            isSpinning = true;
-            balance -= currentBet;
+        function checkVipProgress() {
             totalSpins++;
-
             if (totalSpins >= 40 && vipLevel === 1) {
                 vipLevel = 2;
-                alert("⭐ ¡HAS SUBIDO A VIP 2! Tus condiciones de retiro han mejorado.");
+                alert("⭐ ¡HAS SUBIDO A VIP 2!");
             } else if (totalSpins >= 90 && vipLevel === 2) {
                 vipLevel = 3;
-                alert("👑 ¡HAS ALCANZADO EL NIVEL VIP 3! Máximos beneficios desbloqueados.");
+                alert("👑 ¡HAS ALCANZADO EL NIVEL VIP 3!");
             }
-
-            const m = MACHINES[currentMachineKey];
-            cashBalance += currentBet * m.cashRate;
+            cashBalance += currentBet * 0.0002;
             globalJackpot += currentBet * 0.00005;
+        }
 
+        /* --- SALA 1 & 2: TRAGAPERRAS --- */
+        function spinReels() {
+            if (isPlaying) return;
+            if (balance < currentBet) {
+                alert("Fichas insuficientes. Usa el bono o los anuncios.");
+                return;
+            }
+            playClickSound();
+            isPlaying = true;
+            balance -= currentBet;
+            checkVipProgress();
             updateUI();
 
             const spinBtn = document.getElementById('spin-btn');
             spinBtn.disabled = true;
+            const m = MACHINES[currentMachineKey];
             const reels = [document.getElementById('reel-0'), document.getElementById('reel-1'), document.getElementById('reel-2')];
 
             const interval = setInterval(() => {
@@ -672,24 +826,239 @@
                 ];
                 reels.forEach((r, idx) => r.innerText = res[idx]);
 
-                evaluateWin(res);
-                isSpinning = false;
+                const winBanner = document.getElementById('win-message');
+                if (res[0] === res[1] && res[1] === res[2]) {
+                    const prize = currentBet * 12;
+                    balance += prize;
+                    playCoinSound();
+                    winBanner.innerText = `🎉 ¡PREMIO! +${prize} Fichas`;
+                    winBanner.style.color = "var(--green)";
+                } else {
+                    winBanner.innerText = "¡Sigue probando suerte!";
+                    winBanner.style.color = "#94a3b8";
+                }
+                isPlaying = false;
                 spinBtn.disabled = false;
+                updateUI();
             }, 1200);
         }
 
-        function evaluateWin(res) {
-            const winBanner = document.getElementById('win-message');
-            if (res[0] === res[1] && res[1] === res[2]) {
-                const prize = currentBet * 10;
+        /* --- SALA 3: CRIPTO CRASH --- */
+        let crashInterval = null;
+        let currentMultiplier = 1.00;
+        let crashPoint = 1.00;
+
+        function resetCrashUI() {
+            isPlaying = false;
+            currentMultiplier = 1.00;
+            document.getElementById('crash-mult').innerText = "1.00x";
+            document.getElementById('crash-status').innerText = "Pulsa despegar para comenzar";
+            const btn = document.getElementById('crash-action-btn');
+            btn.innerText = "🚀 DESPEGAR COHETE";
+            btn.onclick = startCrashGame;
+        }
+
+        function startCrashGame() {
+            if (balance < currentBet) {
+                alert("Fichas insuficientes.");
+                return;
+            }
+            playClickSound();
+            balance -= currentBet;
+            checkVipProgress();
+            updateUI();
+
+            isPlaying = true;
+            currentMultiplier = 1.00;
+            crashPoint = (Math.random() * 2.5 + 1.2).toFixed(2); // Explota entre 1.2x y 3.7x
+
+            const btn = document.getElementById('crash-action-btn');
+            btn.innerText = "💰 RETIRAR GANANCIA";
+            btn.onclick = cashoutCrash;
+            document.getElementById('crash-status').innerText = "El cohete está subiendo...";
+
+            crashInterval = setInterval(() => {
+                currentMultiplier += 0.05;
+                document.getElementById('crash-mult').innerText = currentMultiplier.toFixed(2) + "x";
+
+                if (currentMultiplier >= parseFloat(crashPoint)) {
+                    clearInterval(crashInterval);
+                    isPlaying = false;
+                    document.getElementById('crash-mult').innerText = "💥 CRASH (" + crashPoint + "x)";
+                    document.getElementById('crash-status').innerText = "¡Te has estrellado! Perdiste la apuesta.";
+                    btn.innerText = "🚀 REINTENTAR";
+                    btn.onclick = startCrashGame;
+                    updateUI();
+                }
+            }, 100);
+        }
+
+        function cashoutCrash() {
+            if (!isPlaying) return;
+            clearInterval(crashInterval);
+            isPlaying = false;
+            const winnings = Math.floor(currentBet * currentMultiplier);
+            balance += winnings;
+            playCoinSound();
+            document.getElementById('crash-status').innerText = `🎉 ¡Retirado con éxito! +${winnings} Fichas`;
+            const btn = document.getElementById('crash-action-btn');
+            btn.innerText = "🚀 JUGAR OTRA VEZ";
+            btn.onclick = startCrashGame;
+            updateUI();
+        }
+
+        /* --- SALA 4: RULETA DE LA FORTUNA --- */
+        function spinRoulette() {
+            if (isPlaying) return;
+            if (balance < currentBet) {
+                alert("Fichas insuficientes.");
+                return;
+            }
+            playClickSound();
+            balance -= currentBet;
+            checkVipProgress();
+            updateUI();
+
+            isPlaying = true;
+            const btn = document.getElementById('roulette-spin-btn');
+            btn.disabled = true;
+            const icon = document.getElementById('roulette-icon');
+            icon.classList.add('spinning');
+            document.getElementById('roulette-result').innerText = "Girando ruleta...";
+
+            setTimeout(() => {
+                icon.classList.remove('spinning');
+                const multipliers = [0, 0.5, 2, 3, 5];
+                const weights = [0.4, 0.25, 0.2, 0.1, 0.05]; // Probabilidades
+                let rand = Math.random();
+                let mult = 0;
+                let acc = 0;
+                for(let i=0; i<weights.length; i++) {
+                    acc += weights[i];
+                    if(rand <= acc) { mult = multipliers[i]; break; }
+                }
+
+                const prize = Math.floor(currentBet * mult);
+                balance += prize;
+                if(mult > 0) playCoinSound();
+
+                document.getElementById('roulette-result').innerText = mult === 0 ? "❌ ¡Caíste en la casilla vacía!" : `🎉 ¡Premio x${mult}! (+${prize} Fichas)`;
+                btn.disabled = false;
+                isPlaying = false;
+                updateUI();
+            }, 2000);
+        }
+
+        /* --- SALA 5: BLACKJACK 21 --- */
+        let playerHand = [];
+        let dealerHand = [];
+
+        function resetBlackjackUI() {
+            isPlaying = false;
+            playerHand = []; dealerHand = [];
+            document.getElementById('player-cards').innerHTML = '<div class="card-item">-</div><div class="card-item">-</div>';
+            document.getElementById('dealer-cards').innerHTML = '<div class="card-item">🂠</div><div class="card-item">?</div>';
+            document.getElementById('player-score').innerText = "0";
+            document.getElementById('dealer-score').innerText = "?";
+            document.getElementById('bj-message').innerText = "¡Haz tu apuesta y reparte!";
+            
+            const actions = document.getElementById('bj-actions');
+            actions.innerHTML = '<button class="spin-btn" onclick="startBlackjack()" style="grid-column: span 2; background: var(--pink);">🂡 REPARTIR CARTAS</button>';
+        }
+
+        function startBlackjack() {
+            if (balance < currentBet) { alert("Fichas insuficientes."); return; }
+            playClickSound();
+            balance -= currentBet;
+            checkVipProgress();
+            updateUI();
+
+            isPlaying = true;
+            playerHand = [getRandomCard(), getRandomCard()];
+            dealerHand = [getRandomCard(), getRandomCard()];
+
+            updateBJView(false);
+
+            if (calcScore(playerHand) === 21) {
+                endBlackjack("¡BLACKJACK NATURAL! ¡Has ganado!");
+                balance += Math.floor(currentBet * 2.5);
+                playCoinSound();
+                return;
+            }
+
+            document.getElementById('bj-actions').innerHTML = `
+                <button class="spin-btn" onclick="hitCard()" style="background: var(--cyan); color:#000;">PEDIR CARTA</button>
+                <button class="spin-btn" onclick="standCards()" style="background: var(--cash); color:#022c22;">PLANTARSE</button>
+            `;
+            document.getElementById('bj-message').innerText = "¿Pedir carta o plantarse?";
+        }
+
+        function getRandomCard() {
+            const vals = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+            return vals[Math.floor(Math.random() * vals.length)];
+        }
+
+        function calcScore(hand) {
+            let score = 0;
+            let aces = 0;
+            hand.forEach(c => {
+                if (['J','Q','K'].includes(c)) score += 10;
+                else if (c === 'A') { aces++; score += 11; }
+                else score += parseInt(c);
+            });
+            while (score > 21 && aces > 0) { score -= 10; aces--; }
+            return score;
+        }
+
+        function updateBJView(showDealer) {
+            document.getElementById('player-cards').innerHTML = playerHand.map(c => `<div class="card-item">${c}</div>`).join('');
+            document.getElementById('player-score').innerText = calcScore(playerHand);
+
+            if (showDealer) {
+                document.getElementById('dealer-cards').innerHTML = dealerHand.map(c => `<div class="card-item">${c}</div>`).join('');
+                document.getElementById('dealer-score').innerText = calcScore(dealerHand);
+            } else {
+                document.getElementById('dealer-cards').innerHTML = `<div class="card-item">${dealerHand[0]}</div><div class="card-item">🂠</div>`;
+                document.getElementById('dealer-score').innerText = "?";
+            }
+        }
+
+        function hitCard() {
+            playClickSound();
+            playerHand.push(getRandomCard());
+            updateBJView(false);
+            if (calcScore(playerHand) > 21) {
+                endBlackjack("💥 Te has pasado de 21. ¡Gana la banca!");
+            }
+        }
+
+        function standCards() {
+            playClickSound();
+            let dScore = calcScore(dealerHand);
+            while (dScore < 17) {
+                dealerHand.push(getRandomCard());
+                dScore = calcScore(dealerHand);
+            }
+            updateBJView(true);
+
+            let pScore = calcScore(playerHand);
+            if (dScore > 21 || pScore > dScore) {
+                const prize = currentBet * 2;
                 balance += prize;
                 playCoinSound();
-                winBanner.innerText = `🎉 ¡PREMIO GRANDE! +${prize} Fichas`;
-                winBanner.style.color = "var(--green)";
+                endBlackjack(`🎉 ¡Has vencido a la banca! (+${prize} Fichas)`);
+            } else if (pScore === dScore) {
+                balance += currentBet;
+                endBlackjack("🤝 ¡Empate! Se devuelve la apuesta.");
             } else {
-                winBanner.innerText = "¡Sigue sumando tiradas y experiencia VIP!";
-                winBanner.style.color = "#94a3b8";
+                endBlackjack("❌ La banca tiene mejor puntuación. Gana la casa.");
             }
+        }
+
+        function endBlackjack(msg) {
+            isPlaying = false;
+            document.getElementById('bj-message').innerText = msg;
+            document.getElementById('bj-actions').innerHTML = '<button class="spin-btn" onclick="resetBlackjackUI()" style="grid-column: span 2; background: var(--pink);">🔄 NUEVA PARTIDA</button>';
             updateUI();
         }
 
@@ -699,21 +1068,19 @@
             const rules = getVipRules();
 
             if (!email || !email.includes('@')) {
-                alert("Por favor, introduce un correo electrónico válido para procesar el pago.");
+                alert("Introduce un correo electrónico válido.");
                 return;
             }
-
             if (totalSpins < rules.requiredSpins) {
-                alert(`Aún no cumples la actividad mínima. Llevas ${totalSpins} tiradas y necesitas al menos ${rules.requiredSpins}.`);
+                alert(`Actividad insuficiente. Llevas ${totalSpins} tiradas/partidas y necesitas ${rules.requiredSpins}.`);
                 return;
             }
-
             if (cashBalance < rules.minLimit) {
-                alert(`El saldo mínimo para retirar en tu nivel actual es de ${rules.minLimit.toFixed(2)} €.`);
+                alert(`El mínimo de retiro para tu nivel es ${rules.minLimit.toFixed(2)} €.`);
                 return;
             }
 
-            alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € enviada con éxito a ${email}! Procesando pago...`);
+            alert(`¡Solicitud de retiro de ${cashBalance.toFixed(2)} € enviada a ${email}!`);
             cashBalance = 0;
             updateUI();
             openScreen('screen-lobby');
